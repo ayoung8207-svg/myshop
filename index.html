@@ -28,6 +28,17 @@
     color: #2F6B2C;   /* 진한 초록색 제목 */
   }
 
+
+  /* 제목 옆 동그란 로고 사진 */
+  .logo {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;        /* 50%로 하면 동그라미가 됨 */
+    border: 3px solid white;
+    vertical-align: middle;    /* 글자와 높이 맞추기 */
+    margin-right: 12px;
+  }
   header p {
     margin: 8px 0 0 0;
     font-size: 16px;
@@ -205,7 +216,7 @@
 
 <!-- 맨 위: 가게 이름, 한 줄 소개, 메뉴 4개 -->
 <header>
-  <h1>🥗 그린샐러드</h1>
+  <h1><img class="logo" src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=200" alt="그린샐러드 로고">그린샐러드</h1>
   <p>매일 아침 밭에서 온 싱그러움, 그린샐러드입니다</p>
 
   <nav>
