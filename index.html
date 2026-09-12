@@ -10,7 +10,15 @@
   body {
     margin: 0;
     font-family: "맑은 고딕", sans-serif;
-    background-color: #F4FBF3;   /* 아주 연한 초록 배경 */
+
+    /* 배경 사진 (야채 가게 진열대) */
+    background-color: #F4FBF3;              /* 사진이 안 뜰 때 쓰는 색 */
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+      url("https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600");
+    background-size: cover;                 /* 화면에 꽉 차게 */
+    background-position: center;
+    background-attachment: fixed;           /* 스크롤해도 배경은 그대로 */
     color: #3A4A38;
   }
 
