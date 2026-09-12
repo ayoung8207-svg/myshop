@@ -257,9 +257,41 @@
     background-color: #3A4A38;
     color: white;
     text-align: center;
-    padding: 30px 20px;
+    padding: 40px 20px;
     font-size: 15px;
     line-height: 1.8;
+  }
+
+  /* 안내 메뉴 4개 */
+  .footer-menu {
+    border-bottom: 1px solid #5A6B58;   /* 메뉴 아래 구분선 */
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+  }
+
+  .footer-menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 14px;
+    font-size: 15px;
+  }
+
+  .footer-menu a:hover {
+    text-decoration: underline;
+  }
+
+  /* 가게 이름 */
+  .shop-name {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 0 0 12px 0;
+  }
+
+  /* 맨 아래 저작권 표시 */
+  .copyright {
+    font-size: 13px;
+    color: #9AAB98;
+    margin: 22px 0 0 0;
   }
 </style>
 </head>
@@ -412,11 +444,24 @@
 
 <!-- 맨 아래: 연락처 -->
 <footer>
+
+  <!-- 안내 메뉴 4개 -->
+  <div class="footer-menu">
+    <a href="#">이용안내</a>
+    <a href="#">배송조회</a>
+    <a href="#">교환반품</a>
+    <a href="#">자주 묻는 질문</a>
+  </div>
+
+  <p class="shop-name">그린샐러드</p>
+
   <p>
-    그린샐러드 | 고객센터 02-1234-5678<br>
-    평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00 / 주말·공휴일 휴무)<br>
-    이메일 help@greensalad.com
+    고객센터 02-1234-5678 &nbsp;|&nbsp; 이메일 help@greensalad.com<br>
+    평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00 / 주말·공휴일 휴무)
   </p>
+
+  <p class="copyright">&copy; 2026 그린샐러드. All rights reserved.</p>
+
 </footer>
 
 <script>
