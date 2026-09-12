@@ -22,6 +22,44 @@
     color: #3A4A38;
   }
 
+  /* ===== 오른쪽 위 장바구니 ===== */
+  .cart {
+    position: fixed;         /* 스크롤해도 자리에 그대로 */
+    top: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+    background-color: #6FBF6B;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    z-index: 100;            /* 항상 맨 앞에 보이게 */
+  }
+
+  .cart:hover {
+    background-color: #5AA857;
+  }
+
+  /* 담긴 개수를 보여주는 빨간 동그라미 */
+  .cart-count {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 23px;
+    height: 23px;
+    line-height: 23px;
+    background-color: #E53935;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    text-align: center;
+  }
+
   /* ===== 맨 위 (가게 이름 + 소개 + 메뉴) ===== */
   header {
     background-color: #8FD18C;   /* 연한 초록색 */
@@ -373,6 +411,17 @@
 
 <body>
 
+<!-- 오른쪽 위 장바구니 -->
+<div class="cart" onclick="showCart()" title="장바구니 보기">
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+  </svg>
+  <span class="cart-count" id="cartCount">0</span>
+</div>
+
 <!-- 맨 위: 가게 이름, 한 줄 소개, 메뉴 4개 -->
 <header>
   <h1><img class="logo" src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=200" alt="그린샐러드 로고">GREEN SALAD</h1>
@@ -422,7 +471,7 @@
     <h4>닭가슴살 단백 샐러드</h4>
     <p class="price">7,700원</p>
     <p class="old-price">11,000원</p>
-    <button onclick="showAlert('닭가슴살 단백 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('닭가슴살 단백 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="야채">
@@ -432,7 +481,7 @@
     <h4>아보카도 리코타 샐러드</h4>
     <p class="price">9,900원</p>
     <p class="old-price">13,000원</p>
-    <button onclick="showAlert('아보카도 리코타 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('아보카도 리코타 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="야채">
@@ -441,7 +490,7 @@
     <h4>토마토 모짜렐라 샐러드</h4>
     <p class="price">8,400원</p>
     <p class="old-price">12,000원</p>
-    <button onclick="showAlert('토마토 모짜렐라 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('토마토 모짜렐라 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="해산물">
@@ -451,7 +500,7 @@
     <h4>새우망고 샐러드</h4>
     <p class="price">12,500원</p>
     <p class="old-price">14,500원</p>
-    <button onclick="showAlert('새우망고 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('새우망고 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="소고기">
@@ -461,7 +510,7 @@
     <h4>큐브스테이크 샐러드</h4>
     <p class="price">13,800원</p>
     <p class="old-price">16,800원</p>
-    <button onclick="showAlert('큐브스테이크 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('큐브스테이크 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="해산물">
@@ -470,7 +519,7 @@
     <h4>연어 샐러드</h4>
     <p class="price">12,900원</p>
     <p class="old-price">15,900원</p>
-    <button onclick="showAlert('연어 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('연어 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="해산물">
@@ -480,7 +529,7 @@
     <h4>참치아보카도 샐러드</h4>
     <p class="price">9,800원</p>
     <p class="old-price">11,000원</p>
-    <button onclick="showAlert('참치아보카도 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('참치아보카도 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="야채">
@@ -489,7 +538,7 @@
     <h4>유러피안 샐러드</h4>
     <p class="price">9,500원</p>
     <p class="old-price">10,500원</p>
-    <button onclick="showAlert('유러피안 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('유러피안 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="닭고기">
@@ -498,7 +547,7 @@
     <h4>케이준 치킨 샐러드</h4>
     <p class="price">12,000원</p>
     <p class="old-price">14,500원</p>
-    <button onclick="showAlert('케이준 치킨 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('케이준 치킨 샐러드')">장바구니 담기</button>
   </div>
 
   <div class="card" data-category="야채">
@@ -508,7 +557,7 @@
     <h4>병아리콩 아보카도 샐러드</h4>
     <p class="price">11,000원</p>
     <p class="old-price">12,500원</p>
-    <button onclick="showAlert('병아리콩 아보카도 샐러드를 담았습니다!')">장바구니 담기</button>
+    <button onclick="addToCart('병아리콩 아보카도 샐러드')">장바구니 담기</button>
   </div>
 
 </div>
@@ -652,6 +701,25 @@
     // 찜한 하트 개수를 세어서 맨 위에 보여주기
     var picked = document.querySelectorAll(".heart.on").length;
     document.getElementById("wishCount").innerText = picked;
+  }
+
+  /* ===== 장바구니 ===== */
+  var cartList = [];   // 담은 상품 이름을 모아두는 곳
+
+  /* 장바구니 담기 버튼을 누르면 실행 */
+  function addToCart(name) {
+    cartList.push(name);                        // 목록에 추가
+    document.getElementById("cartCount").innerText = cartList.length;
+    alert(name + "\n장바구니에 담았습니다!");
+  }
+
+  /* 오른쪽 위 장바구니를 누르면 실행 */
+  function showCart() {
+    if (cartList.length === 0) {
+      alert("장바구니가 비어 있습니다.");
+    } else {
+      alert("장바구니 (" + cartList.length + "개)\n\n- " + cartList.join("\n- "));
+    }
   }
 </script>
 
