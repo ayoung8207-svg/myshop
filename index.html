@@ -562,7 +562,7 @@
 
 <!-- 상품 검색창 -->
 <div class="search">
-  <input type="text" id="searchBox" placeholder="상품 이름을 검색해 보세요" oninput="searchProduct(this)">
+  <input type="text" id="searchBox" placeholder="상품 이름 검색 (초성도 됩니다)" oninput="searchProduct(this)">
 </div>
 
 <!-- 카테고리 버튼 -->
@@ -762,6 +762,39 @@
   var nowCategory = "전체";
   var nowSearch = "";
 
+  /* ===== 초성 검색에 쓰는 도구 두 개 ===== */
+
+  /* 글자에서 초성만 뽑아내기 (연어 샐러드 -> ㅇㅇㅅㄹㄷ) */
+  function getChoseong(text) {
+    var list = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+    var result = "";
+
+    for (var i = 0; i < text.length; i++) {
+      var code = text.charCodeAt(i) - 44032;   // 44032 는 '가'의 번호
+
+      if (code >= 0 && code <= 11171) {        // 한글 글자이면
+        result = result + list[Math.floor(code / 588)];
+      } else if (text[i] !== " ") {            // 한글이 아니면 그대로 (띄어쓰기는 빼기)
+        result = result + text[i];
+      }
+    }
+    return result;
+  }
+
+  /* 입력한 글자가 전부 자음인지 확인 (ㅇㅇ 처럼) */
+  function isChoseong(text) {
+    if (text.length === 0) {
+      return false;
+    }
+    for (var i = 0; i < text.length; i++) {
+      var c = text.charCodeAt(i);
+      if (c < 12593 || c > 12622) {   // ㄱ(12593) ~ ㅎ(12622) 범위 밖이면
+        return false;
+      }
+    }
+    return true;
+  }
+
   /* 카테고리와 검색어를 함께 따져서 상품을 보이기 / 숨기기 */
   function showProducts() {
     var found = 0;   // 화면에 보이는 상품 개수
@@ -770,7 +803,13 @@
       var name = card.querySelector("h4").innerText;
 
       var okCategory = (nowCategory === "전체" || card.dataset.category === nowCategory);
-      var okSearch = name.includes(nowSearch);
+      // 초성만 입력했으면 초성끼리 비교, 아니면 이름 그대로 비교
+      var okSearch;
+      if (isChoseong(nowSearch)) {
+        okSearch = getChoseong(name).includes(nowSearch);
+      } else {
+        okSearch = name.includes(nowSearch);
+      }
 
       if (okCategory && okSearch) {
         card.style.display = "block";
