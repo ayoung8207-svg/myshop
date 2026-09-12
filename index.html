@@ -200,6 +200,47 @@
     margin: 12px 0 2px 0;
   }
 
+  /* ===== 쇼핑몰 소개 ===== */
+  .about {
+    background-color: #DFF3DC;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .about > p {
+    font-size: 17px;
+    line-height: 1.9;
+    margin: 6px 0;
+  }
+
+  /* 안내 3개를 가로로 나란히 */
+  .info-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 35px;
+  }
+
+  .info {
+    background-color: white;
+    border-radius: 20px;
+    padding: 25px 20px;
+    width: 240px;
+  }
+
+  .info h4 {
+    font-size: 17px;
+    margin: 0 0 12px 0;
+  }
+
+  .info p {
+    font-size: 14px;
+    color: #5A6B58;
+    line-height: 1.7;
+    margin: 0;
+  }
+
   /* ===== 맨 아래 연락처 ===== */
   footer {
     background-color: #3A4A38;
@@ -324,6 +365,38 @@
     <button onclick="showAlert('케이준 치킨 샐러드를 담았습니다!')">장바구니 담기</button>
   </div>
 
+</div>
+
+<!-- 쇼핑몰 소개 -->
+<div class="about">
+  <h3 class="title">그린샐러드를 소개합니다</h3>
+
+  <p>유기농 채소를 사용하여 건강하게 만들었습니다.</p>
+  <p>당일 공급되는 과일과 채소로 신선합니다.</p>
+  <p>소스는 저당으로 건강합니다.</p>
+
+  <!-- 안내 3개 -->
+  <div class="info-list">
+
+    <div class="info">
+      <h4>🚚 배송 안내</h4>
+      <p>오전 10시 이전 주문 시 당일 출발<br>
+         5만원 이상 무료배송</p>
+    </div>
+
+    <div class="info">
+      <h4>🥬 보관 안내</h4>
+      <p>받으신 뒤 냉장 보관해 주세요<br>
+         당일 섭취를 권해드립니다</p>
+    </div>
+
+    <div class="info">
+      <h4>🔄 교환·환불 안내</h4>
+      <p>신선식품이라 단순 변심 환불은 어렵습니다<br>
+         상품에 문제가 있으면 바로 연락 주세요</p>
+    </div>
+
+  </div>
 </div>
 
 <!-- 맨 아래: 연락처 -->
