@@ -113,6 +113,32 @@
     background-color: #5AA857;
   }
 
+  /* ===== 상품 검색창 ===== */
+  .search {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #searchBox {
+    width: 340px;
+    max-width: 80%;
+    padding: 12px 22px;
+    font-size: 15px;
+    border: 2px solid #7ED957;
+    border-radius: 25px;
+    outline: none;
+  }
+
+  /* 찾는 상품이 없을 때 안내 문구 */
+  .no-result {
+    display: none;            /* 평소에는 숨겨둠 */
+    text-align: center;
+    font-size: 17px;
+    line-height: 1.8;
+    color: #5A6B58;
+    padding: 30px 20px 60px 20px;
+  }
+
   /* ===== 카테고리 버튼 ===== */
   .filter {
     text-align: center;
@@ -366,6 +392,11 @@
 <!-- 상품 카드 3개 -->
 <h3 class="title">이번 주 인기 샐러드</h3>
 
+<!-- 상품 검색창 -->
+<div class="search">
+  <input type="text" id="searchBox" placeholder="상품 이름을 검색해 보세요" oninput="searchProduct(this)">
+</div>
+
 <!-- 카테고리 버튼 -->
 <div class="filter">
   <button class="filter-btn active" onclick="filterCategory('전체', this)">전체</button>
@@ -473,6 +504,11 @@
   </div>
 
 </div>
+<!-- 찾는 상품이 없을 때 보여줄 안내 -->
+<p id="noResult" class="no-result">
+  찾으시는 상품이 없습니다.<br>
+  다른 이름으로 검색해 보세요.
+</p>
 
 <!-- 쇼핑몰 소개 -->
 <div class="about">
@@ -552,23 +588,53 @@
     priceTag.innerHTML = '<span class="sale">' + rate + '%</span> ' + newText;
   });
 
-  /* 카테고리 버튼을 누르면 그 분류 상품만 보이기 */
+  /* 지금 고른 카테고리와 검색어를 기억해 두는 곳 */
+  var nowCategory = "전체";
+  var nowSearch = "";
+
+  /* 카테고리와 검색어를 함께 따져서 상품을 보이기 / 숨기기 */
+  function showProducts() {
+    var found = 0;   // 화면에 보이는 상품 개수
+
+    cards.forEach(function (card) {
+      var name = card.querySelector("h4").innerText;
+
+      var okCategory = (nowCategory === "전체" || card.dataset.category === nowCategory);
+      var okSearch = name.includes(nowSearch);
+
+      if (okCategory && okSearch) {
+        card.style.display = "block";
+        found = found + 1;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // 하나도 없으면 안내 문구 보여주기
+    if (found === 0) {
+      document.getElementById("noResult").style.display = "block";
+    } else {
+      document.getElementById("noResult").style.display = "none";
+    }
+  }
+
+  /* 검색창에 글자를 칠 때마다 실행 */
+  function searchProduct(input) {
+    nowSearch = input.value.trim();
+    showProducts();
+  }
+
+  /* 카테고리 버튼을 누르면 실행 */
   function filterCategory(category, clickedButton) {
-    // 1) 버튼 색 바꾸기 (모든 버튼에서 active 떼고, 누른 버튼에만 붙이기)
+    // 버튼 색 바꾸기 (모든 버튼에서 active 떼고, 누른 버튼에만 붙이기)
     var filterButtons = document.querySelectorAll(".filter-btn");
     filterButtons.forEach(function (btn) {
       btn.classList.remove("active");
     });
     clickedButton.classList.add("active");
 
-    // 2) 상품 보이기 / 숨기기
-    cards.forEach(function (card) {
-      if (category === "전체" || card.dataset.category === category) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
-    });
+    nowCategory = category;
+    showProducts();
   }
 
   /* 하트를 누르면 찜하기 / 다시 누르면 풀기 */
