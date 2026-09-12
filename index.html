@@ -142,8 +142,14 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   }
 
-  .emoji {
-    font-size: 70px;
+  /* 상품 사진 */
+  .photo {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;      /* 사진이 찌그러지지 않게 잘라서 채우기 */
+    border-radius: 15px;
+    display: block;
+    margin-bottom: 10px;
   }
 
   .card h4 {
@@ -232,7 +238,7 @@
 <div class="product-list">
 
   <div class="card" data-category="닭고기">
-    <div class="emoji">🥗</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400" alt="닭가슴살 단백 샐러드">
     <h4>닭가슴살 단백 샐러드</h4>
     <p class="price">7,700원</p>
     <p class="old-price">11,000원</p>
@@ -240,7 +246,7 @@
   </div>
 
   <div class="card" data-category="야채">
-    <div class="emoji">🥑</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="아보카도 리코타 샐러드">
     <span class="best">BEST</span>
     <h4>아보카도 리코타 샐러드</h4>
     <p class="price">9,900원</p>
@@ -249,7 +255,7 @@
   </div>
 
   <div class="card" data-category="야채">
-    <div class="emoji">🍅</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2a389?w=400" alt="토마토 모짜렐라 샐러드">
     <h4>토마토 모짜렐라 샐러드</h4>
     <p class="price">8,400원</p>
     <p class="old-price">12,000원</p>
@@ -257,7 +263,7 @@
   </div>
 
   <div class="card" data-category="해산물">
-    <div class="emoji">🍤</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400" alt="새우망고 샐러드">
     <span class="best">BEST</span>
     <h4>새우망고 샐러드</h4>
     <p class="price">12,500원</p>
@@ -266,7 +272,7 @@
   </div>
 
   <div class="card" data-category="소고기">
-    <div class="emoji">🥩</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400" alt="큐브스테이크 샐러드">
     <span class="best">BEST</span>
     <h4>큐브스테이크 샐러드</h4>
     <p class="price">13,800원</p>
@@ -275,7 +281,7 @@
   </div>
 
   <div class="card" data-category="해산물">
-    <div class="emoji">🐟</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400" alt="연어 샐러드">
     <h4>연어 샐러드</h4>
     <p class="price">12,900원</p>
     <p class="old-price">15,900원</p>
@@ -283,7 +289,7 @@
   </div>
 
   <div class="card" data-category="해산물">
-    <div class="emoji">🥫</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400" alt="참치아보카도 샐러드">
     <span class="best">BEST</span>
     <h4>참치아보카도 샐러드</h4>
     <p class="price">9,800원</p>
@@ -292,7 +298,7 @@
   </div>
 
   <div class="card" data-category="야채">
-    <div class="emoji">🥬</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400" alt="유러피안 샐러드">
     <h4>유러피안 샐러드</h4>
     <p class="price">9,500원</p>
     <p class="old-price">10,500원</p>
@@ -300,7 +306,7 @@
   </div>
 
   <div class="card" data-category="닭고기">
-    <div class="emoji">🍗</div>
+    <img class="photo" src="https://images.unsplash.com/photo-1512852939750-1305098529bf?w=400" alt="케이준 치킨 샐러드">
     <h4>케이준 치킨 샐러드</h4>
     <p class="price">12,000원</p>
     <p class="old-price">14,500원</p>
