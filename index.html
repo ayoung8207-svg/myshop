@@ -482,6 +482,16 @@
     color: white;
   }
 
+  /* 상품 불러오는 중 · 불러오기 실패 안내 */
+  .list-status {
+    grid-column: 1 / -1;       /* 카드 칸을 무시하고 한 줄 전체 차지 */
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 15px;
+    padding: 60px 0;
+    margin: 0;
+  }
+
   /* 찾는 상품이 없을 때 */
   .no-result {
     display: none;             /* 평소에는 숨겨둠 */
@@ -767,21 +777,25 @@
     font-weight: 700;
   }
 
-  /* 로그아웃은 눈에 덜 띄게 글씨 버튼으로 */
+  /* 로그아웃은 작고 단정한 테두리 버튼으로 */
   .logout-btn {
-    height: 40px;
-    padding: 0 6px;
-    border: none;
-    background: none;
+    height: 28px;
+    padding: 0 11px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background-color: white;
     color: var(--text-sub);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
     cursor: pointer;
+    transition: 0.15s;
   }
 
   .logout-btn:hover {
+    border-color: var(--text-sub);
     color: var(--text);
-    text-decoration: underline;
   }
 
   /* 휴대폰처럼 좁은 화면: 위쪽 바를 한 줄에 맞추기 */
@@ -1251,154 +1265,9 @@
       <button class="filter-btn" onclick="filterCategory('닭고기', this)">닭고기</button>
     </div>
 
-    <!-- 상품 카드 10개 -->
-    <div class="product-list">
-
-      <div class="card" data-category="닭고기">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=600" alt="닭가슴살 단백 샐러드">
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>닭가슴살 단백 샐러드</h4>
-          <p class="eng">Chicken Breast Protein Salad</p>
-          <p class="price">7,700원</p>
-          <p class="old-price">11,000원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="야채">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600" alt="아보카도 리코타 샐러드">
-          <span class="best">BEST</span>
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>아보카도 리코타 샐러드</h4>
-          <p class="eng">Avocado Ricotta Salad</p>
-          <p class="price">9,900원</p>
-          <p class="old-price">13,000원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="야채">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2a389?w=600" alt="토마토 모짜렐라 샐러드">
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>토마토 모짜렐라 샐러드</h4>
-          <p class="eng">Tomato Mozzarella Salad</p>
-          <p class="price">8,400원</p>
-          <p class="old-price">12,000원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="해산물">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=600" alt="새우망고 샐러드">
-          <span class="best">BEST</span>
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>새우망고 샐러드</h4>
-          <p class="eng">Shrimp and Mango Salad</p>
-          <p class="price">12,500원</p>
-          <p class="old-price">14,500원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="소고기">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=600" alt="큐브스테이크 샐러드">
-          <span class="best">BEST</span>
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>큐브스테이크 샐러드</h4>
-          <p class="eng">Cube Steak Salad</p>
-          <p class="price">13,800원</p>
-          <p class="old-price">16,800원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="해산물">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600" alt="연어 샐러드">
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>연어 샐러드</h4>
-          <p class="eng">Salmon Salad</p>
-          <p class="price">12,900원</p>
-          <p class="old-price">15,900원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="해산물">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1604909052743-94e838986d24?w=600" alt="참치아보카도 샐러드">
-          <span class="best">BEST</span>
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>참치아보카도 샐러드</h4>
-          <p class="eng">Tuna Avocado Salad</p>
-          <p class="price">9,800원</p>
-          <p class="old-price">11,000원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="야채">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600" alt="유러피안 샐러드">
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>유러피안 샐러드</h4>
-          <p class="eng">European Salad</p>
-          <p class="price">9,500원</p>
-          <p class="old-price">10,500원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="닭고기">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1512852939750-1305098529bf?w=600" alt="케이준 치킨 샐러드">
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>케이준 치킨 샐러드</h4>
-          <p class="eng">Cajun Chicken Salad</p>
-          <p class="price">12,000원</p>
-          <p class="old-price">14,500원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
-      <div class="card" data-category="야채">
-        <div class="thumb">
-          <img class="photo" src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=600" alt="병아리콩 아보카도 샐러드">
-          <span class="best">BEST</span>
-          <button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>
-        </div>
-        <div class="card-body">
-          <h4>병아리콩 아보카도 샐러드</h4>
-          <p class="eng">Chickpea Avocado Salad</p>
-          <p class="price">11,000원</p>
-          <p class="old-price">12,500원</p>
-          <button class="btn" onclick="addToCart(this)">장바구니 담기</button>
-        </div>
-      </div>
-
+    <!-- 상품 카드 (슈파베이스 products 테이블에서 불러와서 채움) -->
+    <div class="product-list" id="productList">
+      <p class="list-status">상품을 불러오는 중입니다...</p>
     </div>
 
     <!-- 찾는 상품이 없을 때 보여줄 안내 -->
@@ -1528,48 +1397,92 @@
 
 
   /* ==========================================================
-     상품마다 할인율을 계산해서 가격 앞에 빨간색으로 넣기
+     상품 조회: 카테고리 · 검색어 조건으로 슈파베이스(products 테이블)에서
+     맞는 상품만 받아와 카드로 그리기
      ========================================================== */
-  var cards = document.querySelectorAll(".card");
+  var loadNumber = 0;   // 몇 번째 조회인지 (늦게 도착한 옛날 결과는 버리기 위해)
 
-  cards.forEach(function (card) {
-    var priceTag = card.querySelector(".price");
-    var oldText = card.querySelector(".old-price").innerText;   // 예: "14,500원"
-    var newText = priceTag.innerText;                           // 예: "12,500원"
+  async function loadProducts() {
+    var list = document.getElementById("productList");
+    var myNumber = ++loadNumber;
 
-    // 쉼표와 '원'을 지워서 숫자로 바꾸기
-    var oldPrice = Number(oldText.replaceAll(",", "").replace("원", ""));
-    var newPrice = Number(newText.replaceAll(",", "").replace("원", ""));
+    var query = db
+      .from("products")
+      .select("*")
+      .order("sort_order", { ascending: true });
 
-    // 할인율 = (할인 전 가격 - 판매 가격) / 할인 전 가격 * 100
-    var rate = Math.round((oldPrice - newPrice) / oldPrice * 100);
+    // 카테고리를 골랐으면 그 카테고리만
+    if (nowCategory !== "전체") {
+      query = query.eq("category", nowCategory);
+    }
 
-    card.dataset.price = newPrice;   // 장바구니에서 쓰려고 가격을 숫자로 저장
+    // 검색어가 있으면 이름에 들어간 상품만 (초성만 쳤으면 초성 칸에서 찾기)
+    if (nowSearch !== "") {
+      var word = nowSearch.replace(/[%_\\]/g, "\\$&");   // %, _ 는 검색 기호라서 글자로 바꾸기
+      if (isChoseong(nowSearch)) {
+        query = query.ilike("name_choseong", "%" + word + "%");
+      } else {
+        query = query.ilike("name", "%" + word + "%");
+      }
+    }
 
-    priceTag.innerHTML = '<span class="sale">' + rate + '%</span>' + newText;
-  });
+    var result = await query;
+
+    // 그 사이에 새 조회를 시작했으면 이 결과는 버리기
+    if (myNumber !== loadNumber) {
+      return;
+    }
+
+    if (result.error) {
+      list.innerHTML = '<p class="list-status">상품을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</p>';
+      return;
+    }
+
+    var html = "";
+
+    result.data.forEach(function (p) {
+      // 정가가 있고 판매가보다 비싸면 할인율 계산
+      // 할인율 = (할인 전 가격 - 판매 가격) / 할인 전 가격 * 100
+      var saleTag = "";
+      var oldTag = "";
+      if (p.old_price && p.old_price > p.price) {
+        var rate = Math.round((p.old_price - p.price) / p.old_price * 100);
+        saleTag = '<span class="sale">' + rate + '%</span>';
+        oldTag = '<p class="old-price">' + p.old_price.toLocaleString() + '원</p>';
+      }
+
+      html = html +
+        '<div class="card" data-category="' + p.category + '" data-price="' + p.price + '">' +
+          '<div class="thumb">' +
+            '<img class="photo" src="' + p.image_url + '" alt="' + p.name + '">' +
+            (p.is_best ? '<span class="best">BEST</span>' : '') +
+            '<button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>' +
+          '</div>' +
+          '<div class="card-body">' +
+            '<h4>' + p.name + '</h4>' +
+            '<p class="eng">' + (p.eng_name || '') + '</p>' +
+            '<p class="price">' + saleTag + p.price.toLocaleString() + '원</p>' +
+            oldTag +
+            '<button class="btn" onclick="addToCart(this)">장바구니 담기</button>' +
+          '</div>' +
+        '</div>';
+    });
+
+    list.innerHTML = html;
+
+    // 하나도 없으면 안내 문구 보여주기
+    if (result.data.length === 0) {
+      document.getElementById("noResult").style.display = "block";
+    } else {
+      document.getElementById("noResult").style.display = "none";
+    }
+  }
 
 
   /* ==========================================================
-     초성 검색에 쓰는 도구 두 개
+     초성 검색 도구
+     (상품 이름의 초성은 슈파베이스 name_choseong 칸에 자동으로 저장됨)
      ========================================================== */
-
-  /* 글자에서 초성만 뽑아내기 (연어 샐러드 -> ㅇㅇㅅㄹㄷ) */
-  function getChoseong(text) {
-    var list = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
-    var result = "";
-
-    for (var i = 0; i < text.length; i++) {
-      var code = text.charCodeAt(i) - 44032;   // 44032 는 '가'의 번호
-
-      if (code >= 0 && code <= 11171) {        // 한글 글자이면
-        result = result + list[Math.floor(code / 588)];
-      } else if (text[i] !== " ") {            // 한글이 아니면 그대로 (띄어쓰기는 빼기)
-        result = result + text[i];
-      }
-    }
-    return result;
-  }
 
   /* 입력한 글자가 전부 자음인지 확인 (ㅇㅇ 처럼) */
   function isChoseong(text) {
@@ -1592,43 +1505,19 @@
   var nowCategory = "전체";
   var nowSearch = "";
 
-  /* 카테고리와 검색어를 함께 따져서 상품을 보이기 / 숨기기 */
+  /* 카테고리와 검색어로 슈파베이스에 다시 조회하기 */
   function showProducts() {
-    var found = 0;   // 화면에 보이는 상품 개수
-
-    cards.forEach(function (card) {
-      var name = card.querySelector("h4").innerText;
-
-      var okCategory = (nowCategory === "전체" || card.dataset.category === nowCategory);
-
-      // 초성만 입력했으면 초성끼리 비교, 아니면 이름 그대로 비교
-      var okSearch;
-      if (isChoseong(nowSearch)) {
-        okSearch = getChoseong(name).includes(nowSearch);
-      } else {
-        okSearch = name.includes(nowSearch);
-      }
-
-      if (okCategory && okSearch) {
-        card.style.display = "block";
-        found = found + 1;
-      } else {
-        card.style.display = "none";
-      }
-    });
-
-    // 하나도 없으면 안내 문구 보여주기
-    if (found === 0) {
-      document.getElementById("noResult").style.display = "block";
-    } else {
-      document.getElementById("noResult").style.display = "none";
-    }
+    loadProducts();
   }
 
-  /* 검색창에 글자를 칠 때마다 실행 */
+  /* 검색창에 글자를 칠 때마다 실행
+     (한 글자마다 서버에 묻지 않게, 입력을 멈추고 0.3초 뒤에 조회) */
+  var searchTimer = null;
+
   function searchProduct(input) {
     nowSearch = input.value.trim();
-    showProducts();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(showProducts, 300);
   }
 
   /* 카테고리 버튼을 누르면 실행 */
@@ -1756,7 +1645,8 @@
     }
   }
 
-  drawCart();   // 처음 열었을 때 "담긴 상품이 없습니다" 보여주기
+  drawCart();       // 처음 열었을 때 "담긴 상품이 없습니다" 보여주기
+  loadProducts();   // 슈파베이스에서 상품 목록 불러오기
 
 
   /* ==========================================================
