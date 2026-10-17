@@ -567,13 +567,49 @@
     font-size: 14px;
   }
 
+  /* 담긴 상품 사진 */
+  .item-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;         /* 사진 비율 유지하며 네모 칸 채우기 */
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
   .item-name {
     flex: 1;
+  }
+
+  /* 상품 이름 아래 개수 */
+  .item-qty {
+    display: block;
+    margin-top: 4px;
+    color: #999999;
+    font-size: 12px;
   }
 
   .item-price {
     font-weight: 700;
     white-space: nowrap;
+  }
+
+  /* 빼기 · 더하기 버튼 (개수 하나 줄이기 / 늘리기) */
+  .item-minus {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid #E0E0E0;
+    border-radius: 50%;
+    background-color: white;
+    color: #666666;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .item-minus:hover {
+    border-color: #666666;
+    color: #222222;
   }
 
   /* 삭제 버튼 */
@@ -1276,8 +1312,16 @@
     var card = button.closest(".card");                  // 이 버튼이 들어있는 카드 찾기
     var name = card.querySelector("h4").innerText;       // 상품 이름
     var price = Number(card.dataset.price);              // 가격 (숫자)
+    var img = card.querySelector(".photo").src;          // 상품 사진 주소
 
-    cartList.push({ name: name, price: price });
+    // 이미 담긴 상품이면 개수만 올리고, 처음 담는 상품이면 새 줄 추가
+    var found = cartList.find(function (item) { return item.name === name; });
+
+    if (found) {
+      found.qty = found.qty + 1;
+    } else {
+      cartList.push({ name: name, price: price, img: img, qty: 1 });
+    }
 
     drawCart();      // 목록 다시 그리기
     openCart();      // 장바구니 열기
@@ -1287,18 +1331,24 @@
   function drawCart() {
     var box = document.getElementById("cartItems");
     var total = 0;
+    var count = 0;   // 담긴 상품 개수 합계
     var html = "";
 
     if (cartList.length === 0) {
-      html = '<p class="cart-empty">장바구니가 비어 있습니다.</p>';
+      html = '<p class="cart-empty">담긴 상품이 없습니다</p>';
     } else {
       cartList.forEach(function (item, i) {
-        total = total + item.price;
+        var linePrice = item.price * item.qty;   // 가격 × 개수
+        total = total + linePrice;
+        count = count + item.qty;
 
         html = html +
           '<div class="cart-item">' +
-            '<span class="item-name">' + item.name + '</span>' +
-            '<span class="item-price">' + item.price.toLocaleString() + '원</span>' +
+            '<img class="item-img" src="' + item.img + '" alt="' + item.name + '">' +
+            '<span class="item-name">' + item.name + '<span class="item-qty">' + item.qty + '개</span></span>' +
+            '<span class="item-price">' + linePrice.toLocaleString() + '원</span>' +
+            '<button class="item-minus" onclick="minusFromCart(' + i + ')" title="하나 빼기">&minus;</button>' +
+            '<button class="item-minus" onclick="plusToCart(' + i + ')" title="하나 더 담기">+</button>' +
             '<button class="item-del" onclick="removeFromCart(' + i + ')" title="삭제">&times;</button>' +
           '</div>';
       });
@@ -1306,7 +1356,24 @@
 
     box.innerHTML = html;
     document.getElementById("cartTotal").innerText = total.toLocaleString() + "원";
-    document.getElementById("cartCount").innerText = cartList.length;
+    document.getElementById("cartCount").innerText = count;
+  }
+
+  /* 더하기 버튼을 누르면 개수 하나 늘리기 */
+  function plusToCart(i) {
+    cartList[i].qty = cartList[i].qty + 1;
+    drawCart();
+  }
+
+  /* 빼기 버튼을 누르면 개수 하나 줄이기 (1개였으면 줄 자체를 빼기) */
+  function minusFromCart(i) {
+    cartList[i].qty = cartList[i].qty - 1;
+
+    if (cartList[i].qty === 0) {
+      cartList.splice(i, 1);
+    }
+
+    drawCart();
   }
 
   /* 삭제 버튼을 누르면 그 상품만 빼기 */
@@ -1334,7 +1401,7 @@
     }
   }
 
-  drawCart();   // 처음 열었을 때 "비어 있습니다" 보여주기
+  drawCart();   // 처음 열었을 때 "담긴 상품이 없습니다" 보여주기
 </script>
 
 </body>
