@@ -1452,7 +1452,7 @@
       }
 
       html = html +
-        '<div class="card" data-category="' + p.category + '" data-price="' + p.price + '">' +
+        '<div class="card" data-id="' + p.id + '" data-category="' + p.category + '" data-price="' + p.price + '">' +
           '<div class="thumb">' +
             '<img class="photo" src="' + p.image_url + '" alt="' + p.name + '">' +
             (p.is_best ? '<span class="best">BEST</span>' : '') +
@@ -1549,26 +1549,111 @@
   /* ==========================================================
      장바구니
      ========================================================== */
-  var cartList = [];   // 담은 상품을 모아두는 곳
+  var cartList = [];      // 담은 상품을 모아두는 곳 { id, name, price, img, qty }
+  var cartUserId = null;  // 로그인한 사람의 번호 (로그인 안 했으면 null)
 
   /* 장바구니 담기 버튼을 누르면 실행 */
   function addToCart(button) {
     var card = button.closest(".card");                  // 이 버튼이 들어있는 카드 찾기
+    var id = Number(card.dataset.id);                    // 상품 번호 (슈파베이스 products 의 id)
     var name = card.querySelector("h4").innerText;       // 상품 이름
     var price = Number(card.dataset.price);              // 가격 (숫자)
     var img = card.querySelector(".photo").src;          // 상품 사진 주소
 
     // 이미 담긴 상품이면 개수만 올리고, 처음 담는 상품이면 새 줄 추가
-    var found = cartList.find(function (item) { return item.name === name; });
+    var found = cartList.find(function (item) { return item.id === id; });
 
     if (found) {
       found.qty = found.qty + 1;
     } else {
-      cartList.push({ name: name, price: price, img: img, qty: 1 });
+      found = { id: id, name: name, price: price, img: img, qty: 1 };
+      cartList.push(found);
     }
 
     drawCart();      // 목록 다시 그리기
     openCart();      // 장바구니 열기
+    saveCartItem(found);
+  }
+
+
+  /* ----------------------------------------------------------
+     장바구니를 슈파베이스(cart_items 테이블)에 저장하기
+     - 로그인했을 때만 저장 (안 했으면 이 브라우저 화면에만 있음)
+     ---------------------------------------------------------- */
+
+  /* 한 상품의 개수를 저장 (0개면 지우기) */
+  async function saveCartItem(item) {
+    if (!cartUserId) {
+      return;
+    }
+
+    var result;
+    if (item.qty > 0) {
+      result = await db
+        .from("cart_items")
+        .upsert({ user_id: cartUserId, product_id: item.id, qty: item.qty }, { onConflict: "user_id,product_id" });
+    } else {
+      result = await db
+        .from("cart_items")
+        .delete()
+        .eq("user_id", cartUserId)
+        .eq("product_id", item.id);
+    }
+
+    if (result.error) {
+      showAlert("장바구니를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    }
+  }
+
+  /* 로그인하면: 내 장바구니를 불러오고, 로그인 전에 담아둔 상품은 합쳐서 저장 */
+  async function loadMyCart() {
+    var result = await db
+      .from("cart_items")
+      .select("product_id, qty, products (name, price, image_url)")
+      .eq("user_id", cartUserId)
+      .order("created_at", { ascending: true });
+
+    if (result.error) {
+      showAlert("장바구니를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.");
+      return;
+    }
+
+    var guestItems = cartList;   // 로그인 전에 담아둔 상품
+    var merged = result.data.map(function (row) {
+      return {
+        id: row.product_id,
+        name: row.products.name,
+        price: row.products.price,      // 가격은 지금 상품 가격으로
+        img: row.products.image_url,
+        qty: row.qty
+      };
+    });
+
+    // 로그인 전에 담은 상품을 합치기 (같은 상품이면 개수 더하기)
+    var changed = [];
+    guestItems.forEach(function (g) {
+      var same = merged.find(function (m) { return m.id === g.id; });
+      if (same) {
+        same.qty = same.qty + g.qty;
+        changed.push(same);
+      } else {
+        merged.push(g);
+        changed.push(g);
+      }
+    });
+
+    cartList = merged;
+    drawCart();
+
+    if (changed.length > 0) {
+      var save = await db.from("cart_items").upsert(
+        changed.map(function (m) { return { user_id: cartUserId, product_id: m.id, qty: m.qty }; }),
+        { onConflict: "user_id,product_id" }
+      );
+      if (save.error) {
+        showAlert("장바구니를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+      }
+    }
   }
 
   /* 담긴 상품 목록과 합계를 화면에 그리기 */
@@ -1605,25 +1690,33 @@
 
   /* 더하기 버튼을 누르면 개수 하나 늘리기 */
   function plusToCart(i) {
-    cartList[i].qty = cartList[i].qty + 1;
+    var item = cartList[i];
+    item.qty = item.qty + 1;
     drawCart();
+    saveCartItem(item);
   }
 
   /* 빼기 버튼을 누르면 개수 하나 줄이기 (1개였으면 줄 자체를 빼기) */
   function minusFromCart(i) {
-    cartList[i].qty = cartList[i].qty - 1;
+    var item = cartList[i];
+    item.qty = item.qty - 1;
 
-    if (cartList[i].qty === 0) {
+    if (item.qty === 0) {
       cartList.splice(i, 1);
     }
 
     drawCart();
+    saveCartItem(item);
   }
 
   /* 삭제 버튼을 누르면 그 상품만 빼기 */
   function removeFromCart(i) {
+    var item = cartList[i];
     cartList.splice(i, 1);   // i번째 상품 하나를 목록에서 제거
     drawCart();
+
+    item.qty = 0;            // 0개로 저장 = 슈파베이스에서도 지우기
+    saveCartItem(item);
   }
 
   /* 장바구니 열기 / 닫기 */
@@ -1867,10 +1960,24 @@
       document.getElementById("userName").innerText = id;
       document.getElementById("userAvatar").innerText = id.charAt(0);
       document.getElementById("userChip").title = email;   // 마우스를 올리면 전체 이메일
+
+      // 처음 로그인한 순간에만 내 장바구니 불러오기
+      // (창을 다시 볼 때도 이 신호가 오기 때문에 같은 사람이면 건너뜀)
+      if (cartUserId !== session.user.id) {
+        cartUserId = session.user.id;
+        setTimeout(loadMyCart, 0);   // 이 안에서 바로 슈파베이스를 부르면 멈출 수 있어서 살짝 미룸
+      }
     } else {
       document.body.classList.remove("logged-in");
       document.getElementById("userName").innerText = "";
       document.getElementById("userAvatar").innerText = "";
+
+      // 로그아웃하면 화면의 장바구니 비우기 (슈파베이스에는 그대로 남아 있음)
+      if (cartUserId) {
+        cartUserId = null;
+        cartList = [];
+        drawCart();
+      }
     }
   });
 </script>
