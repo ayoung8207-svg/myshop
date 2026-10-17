@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GREEN SALAD</title>
+<title>GREEN SALAD — 아침에 도착하는 유기농 샐러드</title>
+<meta name="description" content="당일 공급된 유기농 채소로 매일 만드는 샐러드. 오전 10시 이전 주문 시 당일 출발, 5만원 이상 무료배송.">
+<meta name="theme-color" content="#1FB27A">
 
 <!-- 한글 전용 글꼴 (프리텐다드) -->
 <link rel="stylesheet"
@@ -14,18 +16,28 @@
      1. 기본 설정 — 색과 글꼴을 여기서 한 번에 정합니다
      ========================================================== */
   :root {
-    --green-dark:  #2E7D32;   /* 진한 초록 (글씨, 강조) */
-    --green:       #43A047;   /* 기본 초록 (버튼) */
-    --green-light: #7ED957;   /* 밝은 초록 (BEST 배지) */
-    --green-pale:  #F1F8EF;   /* 아주 연한 초록 (구역 배경) */
-    --red:         #E53935;   /* 할인율, 장바구니 개수 */
-    --text:        #1A1A1A;   /* 본문 글씨 */
-    --text-sub:    #707070;   /* 흐린 글씨 */
-    --line:        #E9E9E9;   /* 구분선, 테두리 */
+    --green-dark:  #12805C;   /* 진한 초록 (글씨, 강조) */
+    --green:       #1FB27A;   /* 기본 초록 (버튼) - 청량한 민트 그린 */
+    --green-light: #C8F27C;   /* 라임 (BEST 배지, 포인트) */
+    --green-pale:  #EDF8F2;   /* 아주 연한 초록 (구역 배경) */
+    --red:         #FF5A4E;   /* 코랄 (할인율, 장바구니 개수) */
+    --peach:       #FFF3EC;   /* 연한 복숭아 (타임세일 배경) */
+    --cream:       #F8F7F2;   /* 크림 (구역 배경) */
+    --star:        #FFB020;   /* 별점 */
+    --text:        #18211D;   /* 본문 글씨 */
+    --text-sub:    #6E7873;   /* 흐린 글씨 */
+    --line:        #E8ECEA;   /* 구분선, 테두리 */
+    --forest:      #0F3A2C;   /* 아주 진한 초록 (푸터) */
+    --shadow:      0 12px 32px rgba(16, 58, 44, 0.10);
   }
 
   * {
     box-sizing: border-box;   /* 테두리·여백을 크기에 포함시켜 계산을 쉽게 */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 130px;  /* 메뉴를 눌러 이동할 때 고정 바에 가리지 않게 */
   }
 
   body {
@@ -34,14 +46,21 @@
     color: var(--text);
     background-color: #FFFFFF;
     line-height: 1.6;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
   }
 
   /* 가운데로 폭을 맞춰주는 공통 틀 */
   .container {
-    max-width: 1180px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   /* 공통 버튼 */
@@ -49,40 +68,67 @@
     background-color: var(--green);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 13px 26px;
     font-family: inherit;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.15s;
+    transition: background-color 0.2s, transform 0.12s, box-shadow 0.2s;
   }
 
   .btn:hover {
     background-color: var(--green-dark);
   }
 
+  /* 누르는 순간 살짝 눌리는 느낌 */
+  .btn:active,
+  .icon-btn:active,
+  .cart-btn:active,
+  .filter-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* 키보드로 이동할 때 보이는 테두리 */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid rgba(31, 178, 122, 0.45);
+    outline-offset: 2px;
+  }
+
+  /* 화면에는 안 보이고 화면낭독기만 읽는 글씨 */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
 
   /* ==========================================================
-     2. 맨 위 고정 바 (로고 · 메뉴 · 장바구니)
+     2. 맨 위 고정 바 (로고 · 검색 · 아이콘 / 카테고리 메뉴)
      ========================================================== */
   .topbar {
     position: sticky;          /* 스크롤해도 맨 위에 붙어 있음 */
     top: 0;
     z-index: 200;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
     border-bottom: 1px solid var(--line);
   }
 
   .topbar-inner {
-    max-width: 1180px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
-    height: 70px;
+    padding: 0 24px;
+    height: 74px;
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 28px;
   }
 
   /* 로고 + 가게 이름 */
@@ -94,56 +140,100 @@
     color: var(--text);
     font-size: 21px;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     white-space: nowrap;
   }
 
   .brand img {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--green-pale);
   }
 
-  /* 가운데 메뉴 4개 */
-  .gnb {
-    display: flex;
-    gap: 26px;
-    margin-left: 14px;
+  .brand-name b {
+    color: var(--green);
+  }
+
+  /* 검색창 */
+  .search-wrap {
+    position: relative;
     flex: 1;
+    max-width: 440px;
   }
 
-  .gnb a {
-    color: var(--text);
-    text-decoration: none;
+  .search-wrap svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    pointer-events: none;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    height: 46px;
+    padding: 0 18px 0 44px;
+    border: 1.5px solid transparent;
+    border-radius: 23px;
+    background-color: #F3F6F4;
+    font-family: inherit;
     font-size: 15px;
-    font-weight: 500;
-    padding: 6px 0;
-    border-bottom: 2px solid transparent;
+    color: var(--text);
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
   }
 
-  .gnb a:hover {
-    color: var(--green-dark);
-    border-bottom-color: var(--green);
+  .search-wrap input::placeholder {
+    color: #9AA39F;
   }
 
-  /* 오른쪽 찜·장바구니 */
+  .search-wrap input:focus {
+    outline: none;
+    border-color: var(--green);
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(31, 178, 122, 0.12);
+  }
+
+  /* 오른쪽 아이콘 · 버튼 */
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    margin-left: auto;
   }
 
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.12s;
+  }
+
+  .icon-btn:hover {
+    background-color: var(--green-pale);
+    color: var(--green-dark);
+  }
+
+  /* 찜 개수 */
   .wish-chip {
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 40px;
+    height: 42px;
     padding: 0 14px;
     border: 1px solid var(--line);
-    border-radius: 20px;
+    border-radius: 21px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-sub);
   }
 
@@ -155,8 +245,8 @@
   /* 장바구니 버튼 */
   .cart-btn {
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,7 +255,7 @@
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    transition: 0.15s;
+    transition: background-color 0.2s, transform 0.12s;
   }
 
   .cart-btn:hover {
@@ -186,50 +276,120 @@
     border-radius: 10px;
     text-align: center;
     padding: 0 5px;
+    border: 2px solid white;
+    box-sizing: content-box;
+  }
+
+  /* 담을 때 장바구니 숫자가 톡 튀는 효과 */
+  .cart-count.bump {
+    animation: bump 0.4s ease;
+  }
+
+  @keyframes bump {
+    40% { transform: scale(1.35); }
+  }
+
+  /* 두 번째 줄: 카테고리 메뉴 */
+  .catbar {
+    border-top: 1px solid var(--line);
+  }
+
+  .catbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;          /* 좁으면 옆으로 밀어서 보기 */
+    scrollbar-width: none;
+  }
+
+  .catbar-inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catbar a {
+    flex-shrink: 0;
+    padding: 12px 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .catbar a:hover {
+    color: var(--green-dark);
+    border-bottom-color: var(--green);
+  }
+
+  .catbar a.hot {
+    color: var(--red);
+  }
+
+  .catbar .divider {
+    flex-shrink: 0;
+    width: 1px;
+    margin: 14px 8px;
+    background-color: var(--line);
   }
 
 
   /* ==========================================================
-     3. 큰 배너 (사진 위에 글씨)
+     3. 메인 배너 (프로모션 + 버튼)
      ========================================================== */
+  .hero-wrap {
+    padding-top: 24px;
+  }
+
   .hero {
     position: relative;
-    min-height: 440px;
+    overflow: hidden;
+    min-height: 460px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    padding: 56px 64px;
+    border-radius: 28px;
     color: white;
-    padding: 70px 20px;
+    background:
+      linear-gradient(90deg, rgba(10, 46, 33, 0.86) 0%, rgba(10, 46, 33, 0.55) 45%, rgba(10, 46, 33, 0.05) 100%),
+      url("https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1800") center / cover no-repeat;
+  }
 
-    /* 사진이 어두워야 흰 글씨가 보이므로 검은 막을 덮습니다 */
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.52)),
-      url("https://images.unsplash.com/photo-1542838132-92c53300491e?w=1800");
-    background-size: cover;
-    background-position: center;
+  .hero-text {
+    max-width: 520px;
   }
 
   .hero-eyebrow {
-    margin: 0 0 14px 0;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    display: inline-block;
+    margin: 0 0 18px 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: var(--green-light);
+    color: var(--forest);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  .hero h1 {
+    margin: 0 0 16px 0;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+  }
+
+  .hero h1 em {
+    font-style: normal;
     color: var(--green-light);
   }
 
-  .hero h2 {
-    margin: 0 0 16px 0;
-    font-size: 46px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.25;
-  }
-
   .hero-desc {
-    margin: 0 0 8px 0;
-    font-size: 17px;
-    opacity: 0.92;
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    opacity: 0.94;
   }
 
   .hero-note {
@@ -238,91 +398,190 @@
     opacity: 0.7;
   }
 
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .hero .btn {
-    padding: 15px 36px;
+    padding: 16px 30px;
     font-size: 16px;
+  }
+
+  .btn-lime {
+    background-color: var(--green-light);
+    color: var(--forest);
+  }
+
+  .btn-lime:hover {
+    background-color: #B6E95F;
+    box-shadow: 0 8px 24px rgba(200, 242, 124, 0.35);
+  }
+
+  .btn-ghost {
+    background-color: rgba(255, 255, 255, 0.14);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.24);
   }
 
 
   /* ==========================================================
-     4. 구역 제목
+     4. 믿고 사는 이유 (배송 · 무료배송 · 신선 · 저당)
      ========================================================== */
-  .section {
-    padding: 80px 0;
+  .trust {
+    padding: 28px 0 8px;
   }
 
-  .section-head {
-    text-align: center;
-    margin-bottom: 38px;
+  .trust-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .section-eyebrow {
-    margin: 0 0 10px 0;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+  .trust-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background-color: var(--cream);
+  }
+
+  .trust-ico {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background-color: white;
     color: var(--green);
   }
 
-  .section-title {
-    margin: 0 0 10px 0;
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+  .trust-list strong {
+    display: block;
+    font-size: 15px;
   }
 
-  .section-desc {
-    margin: 0;
-    font-size: 16px;
+  .trust-list span {
+    font-size: 13px;
     color: var(--text-sub);
   }
 
 
   /* ==========================================================
-     5. 검색창과 카테고리 버튼
+     5. 구역 공통 (제목 · 간격)
      ========================================================== */
-  .search {
-    text-align: center;
-    margin-bottom: 18px;
+  .section {
+    padding: 80px 0 0;
   }
 
-  #searchBox {
-    width: 420px;
-    max-width: 100%;
-    padding: 14px 20px;
-    font-family: inherit;
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-eyebrow {
+    margin: 0 0 6px 0;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.3;
+  }
+
+  .section-desc {
+    margin: 6px 0 0 0;
+    color: var(--text-sub);
     font-size: 15px;
-    color: var(--text);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    outline: none;
-    transition: 0.15s;
   }
 
-  #searchBox:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.12);
+  .more-link {
+    flex-shrink: 0;
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    color: var(--text-sub);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
   }
 
+  .more-link:hover {
+    color: var(--green-dark);
+  }
+
+  /* 타임세일 구역 (연한 복숭아 배경 상자) */
+  .sale-box {
+    padding: 40px;
+    border-radius: 28px;
+    background-color: var(--peach);
+  }
+
+  .countdown {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    background-color: white;
+    font-size: 13px;
+    color: var(--text-sub);
+  }
+
+  .countdown b {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--red);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+
+  /* ==========================================================
+     6. 카테고리 버튼 · 검색 결과 안내
+     ========================================================== */
   .filter {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 8px;
-    margin-bottom: 40px;
+    margin-bottom: 28px;
   }
 
   .filter-btn {
-    background-color: white;
-    color: var(--text-sub);
+    padding: 10px 20px;
     border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 9px 20px;
+    border-radius: 22px;
+    background-color: white;
+    color: var(--text);
     font-family: inherit;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.15s;
+    transition: all 0.2s;
   }
 
   .filter-btn:hover {
@@ -330,155 +589,239 @@
     color: var(--green-dark);
   }
 
-  /* 지금 선택된 버튼 */
-  .filter-btn.active,
-  .filter-btn.active:hover {
-    background-color: var(--green-dark);
-    border-color: var(--green-dark);
+  .filter-btn.active {
+    background-color: var(--text);
+    border-color: var(--text);
     color: white;
-    font-weight: 600;
+  }
+
+  .search-info {
+    display: none;
+    margin: -12px 0 22px 0;
+    font-size: 14px;
+    color: var(--text-sub);
+  }
+
+  .search-info b {
+    color: var(--green-dark);
+  }
+
+  .search-info button {
+    margin-left: 6px;
+    padding: 2px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: white;
+    color: var(--text-sub);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
   }
 
 
   /* ==========================================================
-     6. 상품 카드
+     7. 상품 카드
      ========================================================== */
   .product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
-    gap: 28px 22px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px 22px;
   }
 
   .card {
-    position: relative;        /* 하트 버튼의 위치 기준점 */
-    background-color: white;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: 0.18s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  .card:hover {
-    transform: translateY(-4px);
-  }
-
-  /* 사진을 감싸는 네모 (비율 고정) */
+  /* 사진 칸 */
   .thumb {
     position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: 12px;
     overflow: hidden;
-    background-color: var(--green-pale);
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    background-color: #F1F4F2;
   }
 
   .photo {
     width: 100%;
     height: 100%;
-    object-fit: cover;         /* 사진이 찌그러지지 않게 잘라서 채우기 */
-    display: block;
-    transition: 0.35s;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
+  /* 마우스를 올리면 사진이 살짝 커지고 */
   .card:hover .photo {
-    transform: scale(1.06);    /* 마우스를 올리면 사진이 살짝 확대 */
+    transform: scale(1.07);
   }
 
-  /* BEST 배지 */
-  .best {
+  /* 사진 위 '빠른 담기' 버튼이 아래에서 올라옴 */
+  .quick-add {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: var(--green-light);
-    color: #14400F;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(24, 33, 29, 0.88);
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s, background-color 0.2s;
+  }
+
+  .quick-add:hover {
+    background-color: var(--green-dark);
+  }
+
+  .card:hover .quick-add,
+  .quick-add:focus-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 배지 (BEST / 할인율) */
+  .badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .best,
+  .badge-sale {
+    padding: 4px 10px;
+    border-radius: 8px;
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.06em;
-    border-radius: 4px;
-    padding: 4px 9px;
+    letter-spacing: 0.04em;
   }
 
-  /* 찜하기 하트 */
+  .best {
+    background-color: var(--green-light);
+    color: var(--forest);
+  }
+
+  .badge-sale {
+    background-color: var(--red);
+    color: white;
+  }
+
+  /* 찜 하트 */
   .heart {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 34px;
-    height: 34px;
-    padding: 0;
+    top: 10px;
+    right: 10px;
+    width: 38px;
+    height: 38px;
     border: none;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.92);
-    color: #CBCBCB;            /* 찜 안 한 상태 */
+    color: #C9CFCC;
     font-size: 17px;
     line-height: 1;
     cursor: pointer;
-    transition: 0.15s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: color 0.2s, transform 0.15s;
   }
 
   .heart:hover {
-    background-color: white;
     transform: scale(1.1);
   }
 
-  /* 찜한 상태 */
   .heart.on {
     color: var(--red);
+    animation: pop 0.35s ease;
   }
 
-  /* 카드 글자 부분 */
+  @keyframes pop {
+    50% { transform: scale(1.3); }
+  }
+
+  /* 글씨 칸 */
   .card-body {
-    padding: 14px 2px 0 2px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px 4px 0;
   }
 
-  .card h4 {
-    margin: 0 0 8px 0;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+  .card-body h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
   }
 
-  /* 상품 영문 이름 */
-  .card .eng {
-    margin: -5px 0 9px 0;
+  .eng {
+    margin: 2px 0 0 0;
+    color: #9AA39F;
     font-size: 12px;
-    font-weight: 500;
-    color: #9E9E9E;
-    letter-spacing: 0.01em;
   }
 
-  /* 판매 가격 */
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 8px 0 0 0;
+    font-size: 13px;
+    color: var(--text-sub);
+  }
+
+  .rating .star {
+    color: var(--star);
+  }
+
+  .rating b {
+    color: var(--text);
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    margin: 6px 0 14px 0;
+  }
+
   .price {
-    margin: 0 0 2px 0;
-    font-size: 18px;
+    margin: 0;
+    font-size: 19px;
     font-weight: 800;
     letter-spacing: -0.02em;
   }
 
-  /* 할인율 (빨간색) */
   .sale {
+    margin-right: 6px;
     color: var(--red);
-    margin-right: 5px;
   }
 
-  /* 할인 전 가격 (회색 취소선) */
   .old-price {
-    margin: 0 0 12px 0;
+    margin: 0;
+    color: #A8B0AC;
     font-size: 13px;
-    color: #AFAFAF;
     text-decoration: line-through;
   }
 
   .card .btn {
     width: 100%;
+    margin-top: auto;
     padding: 11px;
-    font-size: 14px;
     background-color: white;
     color: var(--green-dark);
-    border: 1px solid var(--line);
+    border: 1.5px solid var(--green);
+    font-size: 14px;
   }
 
   .card .btn:hover {
-    background-color: var(--green-dark);
-    border-color: var(--green-dark);
+    background-color: var(--green);
+    border-color: var(--green);
     color: white;
   }
 
@@ -492,6 +835,18 @@
     margin: 0;
   }
 
+  /* 불러오는 동안 보이는 회색 카드 */
+  .skeleton {
+    aspect-ratio: 1 / 1.45;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #F1F4F2 25%, #E7ECE9 50%, #F1F4F2 75%) 0 0 / 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+  }
+
+  @keyframes shimmer {
+    to { background-position: -200% 0; }
+  }
+
   /* 찾는 상품이 없을 때 */
   .no-result {
     display: none;             /* 평소에는 숨겨둠 */
@@ -499,7 +854,8 @@
     font-size: 16px;
     line-height: 1.9;
     color: var(--text-sub);
-    padding: 70px 20px;
+    padding: 60px 20px;
+    margin: 0;
   }
 
 
@@ -957,144 +1313,743 @@
 
 
   /* ==========================================================
-     8. 쇼핑몰 소개
+     7-2. 주문서 창 (가운데에 뜨는 창)
      ========================================================== */
-  .about {
+  .order-dim {
+    display: none;             /* 평소에는 숨겨둠 */
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 400;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .order-dim.open {
+    display: flex;
+  }
+
+  .order-box {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;          /* 내용이 길면 창 안에서 스크롤 */
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 14px;
+    padding: 30px 26px 26px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .order-x {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
+
+  .order-box h3 {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+  }
+
+  /* 1 주문서 작성 · 2 주문 내용 확인 */
+  .order-steps {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 22px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .order-steps li {
+    padding: 5px 12px;
+    border-radius: 14px;
+    background-color: #F4F4F4;
+    color: #ABABAB;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .order-steps li.on {
     background-color: var(--green-pale);
-    padding: 80px 0;
+    color: var(--green-dark);
+  }
+
+  /* 2단계: 받는 분 정보 확인 표 */
+  .order-check {
+    display: grid;
+    grid-template-columns: 74px 1fr;
+    gap: 10px 12px;
+    margin: 0 0 16px 0;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #FAFAFA;
+    font-size: 14px;
+  }
+
+  .order-check dt {
+    color: var(--text-sub);
+  }
+
+  .order-check dd {
+    margin: 0;
+    font-weight: 600;
+    word-break: break-all;     /* 긴 주소도 칸 안에서 줄바꿈 */
+  }
+
+  .order-check + h4 {
+    margin-top: 24px;
+  }
+
+  /* 이대로 주문하시겠습니까? */
+  .order-question {
+    margin: 0 0 18px 0;
     text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
   }
 
-  .about-lines {
-    margin: 0 0 46px 0;
+  /* 소제목 (주문 상품 / 받는 분 정보) */
+  .order-box h4 {
+    margin: 0 0 12px 0;
+    font-size: 15px;
+    color: var(--green-dark);
   }
 
-  .about-lines p {
-    margin: 8px 0;
+  /* 주문 상품 요약 */
+  .order-items {
+    margin: 0 0 8px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .order-items li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  .order-items img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .order-items .o-name {
+    flex: 1;
+  }
+
+  .order-items .o-qty {
+    color: var(--text-sub);
+    font-size: 13px;
+    margin-left: 4px;
+  }
+
+  .order-items .o-price {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 24px 0;
+    padding: 14px 0 0 0;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .order-total span {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green-dark);
+  }
+
+  /* 받는 분 정보 입력칸 */
+  .order-box label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sub);
+  }
+
+  .order-box input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 44px;
+    padding: 0 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+  }
+
+  .order-box input:focus {
+    outline: none;
+    border-color: var(--green);
+  }
+
+  /* 아래 버튼 두 개 (돌아가기 · 주문하기) 나란히 */
+  .order-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .order-box .btn {
+    flex: 1;
+    padding: 14px 10px;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  /* 장바구니로 돌아가기: 흰 바탕 초록 테두리 */
+  .order-box .order-back {
+    background-color: white;
+    color: var(--green-dark);
+    border: 1px solid var(--green);
+  }
+
+  .order-box .order-back:hover {
+    background-color: var(--green-pale);
+  }
+
+  /* 안내 문구 (fail 빨강 / ok 초록) */
+  .order-msg {
+    display: none;
+    margin: 0 0 14px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .order-msg.fail {
+    display: block;
+    background-color: #FDECEA;
+    color: var(--red);
+  }
+
+  .order-msg.ok {
+    display: block;
+    background-color: var(--green-pale);
+    color: var(--green-dark);
+  }
+
+
+
+
+  /* ==========================================================
+     8. 브랜드 이야기 + 배송 · 보관 · 교환 안내
+     ========================================================== */
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .story-photo {
+    overflow: hidden;
+    aspect-ratio: 4 / 3.4;
+    border-radius: 28px;
+  }
+
+  .story-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .story-points {
+    margin: 26px 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-points li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
     font-size: 17px;
-    color: #40503E;
+    font-weight: 600;
+  }
+
+  .story-points li:last-child {
+    border-bottom: none;
+  }
+
+  .story-points .num {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--green-pale);
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 800;
   }
 
   .info-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    text-align: left;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
   }
 
   .info {
-    background-color: white;
-    border-radius: 12px;
-    padding: 28px 26px;
+    padding: 26px;
+    border-radius: 20px;
+    background-color: var(--cream);
   }
 
   .info h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin: 0 0 10px 0;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 800;
+  }
+
+  .info h4 span {
+    color: var(--green);
   }
 
   .info p {
     margin: 0;
     font-size: 14px;
-    line-height: 1.75;
+    line-height: 1.8;
     color: var(--text-sub);
   }
 
 
   /* ==========================================================
-     9. 맨 아래 (안내 메뉴 · 고객센터 · 사업자 정보)
+     9. 구매 후기 · 인스타그램
+     ========================================================== */
+  .review-empty {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 32px 36px;
+    border: 1.5px dashed #CFE9DC;
+    border-radius: 24px;
+    background-color: var(--green-pale);
+  }
+
+  .review-empty strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 18px;
+  }
+
+  .review-empty p {
+    margin: 0;
+    color: var(--text-sub);
+    font-size: 14px;
+  }
+
+  .review-empty .stars {
+    flex-shrink: 0;
+    color: #CDE8D9;
+    font-size: 26px;
+    letter-spacing: 4px;
+  }
+
+  .insta-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+
+  .insta-grid a {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    background-color: #F1F4F2;
+  }
+
+  .insta-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .insta-grid a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(15, 58, 44, 0);
+    transition: background-color 0.3s;
+  }
+
+  .insta-grid a:hover img {
+    transform: scale(1.08);
+  }
+
+  .insta-grid a:hover::after {
+    background-color: rgba(15, 58, 44, 0.25);
+  }
+
+
+  /* ==========================================================
+     10. 맨 아래 (고객센터 · 사업자 정보 · 약관 · SNS)
      ========================================================== */
   footer {
-    background-color: #F7F8F7;
-    border-top: 1px solid var(--line);
-    padding: 46px 0 40px 0;
+    margin-top: 96px;
+    padding: 64px 0 36px;
+    background-color: var(--forest);
+    color: rgba(255, 255, 255, 0.66);
     font-size: 13px;
-    color: var(--text-sub);
+    line-height: 1.85;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1.2fr 1.2fr;
+    gap: 36px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .footer-brand {
+    margin: 0 0 10px 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .footer-brand b {
+    color: var(--green-light);
+  }
+
+  footer h5 {
+    margin: 0 0 12px 0;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  footer p {
+    margin: 0;
+  }
+
+  .footer-tel {
+    margin-bottom: 4px;
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .sns {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .sns a {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+    transition: background-color 0.2s;
+  }
+
+  .sns a:hover {
+    background-color: var(--green);
+  }
+
+  .pay-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .pay-list span {
+    padding: 2px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 24px;
   }
 
   .footer-menu {
     display: flex;
     flex-wrap: wrap;
-    gap: 22px;
-    padding-bottom: 24px;
-    margin-bottom: 26px;
-    border-bottom: 1px solid var(--line);
+    gap: 4px 20px;
   }
 
   .footer-menu a {
-    color: var(--text);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
   }
 
   .footer-menu a:hover {
-    color: var(--green-dark);
+    color: white;
   }
 
-  .footer-cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-  }
-
-  .footer-cols h5 {
-    margin: 0 0 10px 0;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
-
-  .footer-cols p {
-    margin: 0;
-    line-height: 1.9;
-  }
-
-  .footer-tel {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.02em;
+  .footer-menu strong {
+    color: white;
   }
 
   .copyright {
-    margin: 30px 0 0 0;
-    padding-top: 22px;
-    border-top: 1px solid var(--line);
-    font-size: 12px;
-    color: #9A9A9A;
+    color: rgba(255, 255, 255, 0.4);
   }
 
 
   /* ==========================================================
-     10. 화면이 좁을 때 (휴대폰)
+     11. 스크롤하면 부드럽게 나타나는 효과
+     (자바스크립트가 켜진 경우에만 숨겼다가 보여줌)
      ========================================================== */
+  .reveal-on .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .reveal-on .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 움직임 줄이기를 켠 사람에게는 효과 끄기 */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .reveal-on .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+
+  /* ==========================================================
+     12. 화면 크기별 (태블릿 · 휴대폰)
+     ========================================================== */
+  @media (max-width: 1080px) {
+    .product-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .trust-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .insta-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .wish-chip {
+      display: none;
+    }
+  }
+
   @media (max-width: 860px) {
-    .gnb {
-      display: none;           /* 좁으면 가운데 메뉴는 숨김 */
-    }
-
+    /* 고정 바: 검색창은 두 번째 줄로 */
     .topbar-inner {
-      justify-content: space-between;
+      flex-wrap: wrap;
+      height: auto;
+      gap: 10px 12px;
+      padding-top: 12px;
+      padding-bottom: 12px;
     }
 
-    .hero h2 {
-      font-size: 32px;
+    .search-wrap {
+      order: 3;
+      flex-basis: 100%;
+      max-width: none;
+    }
+
+    .search-wrap input {
+      height: 42px;
+    }
+
+    .mypage-btn {
+      display: none;
+    }
+
+    html {
+      scroll-padding-top: 170px;
+    }
+
+    .hero {
+      min-height: 400px;
+      padding: 40px 28px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(10, 46, 33, 0.35) 0%, rgba(10, 46, 33, 0.85) 100%),
+        url("https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200") center / cover no-repeat;
+      align-items: flex-end;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+    }
+
+    .hero-desc {
+      font-size: 16px;
     }
 
     .section {
-      padding: 56px 0;
+      padding-top: 60px;
     }
 
     .section-title {
-      font-size: 25px;
+      font-size: 24px;
+    }
+
+    .section-head {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .sale-box {
+      padding: 28px 20px;
+      border-radius: 22px;
     }
 
     .product-list {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 22px 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px 14px;
+    }
+
+    /* 휴대폰은 마우스가 없으니 빠른 담기 버튼 대신 아래 버튼만 */
+    .quick-add {
+      display: none;
+    }
+
+    .story {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .info-list {
+      grid-template-columns: 1fr;
+      margin-top: 32px;
+    }
+
+    .review-empty {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 26px;
+    }
+
+    footer {
+      margin-top: 72px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .container {
+      padding-left: 16px;      /* 위아래 여백(구역 간격)은 그대로 두고 양옆만 */
+      padding-right: 16px;
+    }
+
+    .catbar-inner {
+      padding: 0 8px;
+    }
+
+    .catbar a {
+      padding: 11px 10px;
+      font-size: 14px;
+    }
+
+    .hero-wrap {
+      padding-top: 12px;
+    }
+
+    .hero {
+      padding: 32px 22px;
+      min-height: 380px;
+    }
+
+    .hero h1 {
+      font-size: 31px;
+    }
+
+    .hero .btn {
+      padding: 14px 20px;
+      font-size: 15px;
+    }
+
+    .trust-list {
+      gap: 10px;
+    }
+
+    .trust-list li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .trust-ico {
+      width: 38px;
+      height: 38px;
+    }
+
+    .card-body h4 {
+      font-size: 15px;
+    }
+
+    .price {
+      font-size: 17px;
+    }
+
+    .insta-grid {
+      gap: 6px;
+    }
+
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 28px;
     }
   }
 </style>
@@ -1103,22 +2058,27 @@
 <body>
 
 <!-- =========================================================
-     맨 위 고정 바
+     맨 위 고정 바 (로고 · 검색 · 로그인 · 찜 · 장바구니 / 카테고리 메뉴)
      ========================================================= -->
 <header class="topbar">
   <div class="topbar-inner">
 
-    <a class="brand" href="#">
-      <img src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=200" alt="GREEN SALAD 로고">
-      <span class="brand-name">GREEN SALAD</span>
+    <a class="brand" href="#top" aria-label="GREEN SALAD 처음으로">
+      <img src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=200" alt="">
+      <span class="brand-name">GREEN <b>SALAD</b></span>
     </a>
 
-    <nav class="gnb">
-      <a href="#">신선 샐러드</a>
-      <a href="#">샐러드 도시락</a>
-      <a href="#">드레싱</a>
-      <a href="#">이벤트</a>
-    </nav>
+    <!-- 검색창 (글자를 치면 아래 전체 메뉴가 바로 바뀜, 초성도 됨) -->
+    <div class="search-wrap" role="search">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label for="searchBox" class="sr-only">상품 검색</label>
+      <input type="search" id="searchBox" placeholder="어떤 샐러드를 찾으세요? (초성 검색 OK)"
+             oninput="searchProduct(this)" onkeydown="if (event.key === 'Enter') goSection('menu')">
+    </div>
 
     <div class="topbar-right">
       <!-- 로그인 전에 보이는 버튼 -->
@@ -1127,7 +2087,7 @@
         <button class="join-btn" onclick="openJoin()">새싹되기</button>
       </span>
 
-      <!-- 로그인 후에 보이는 내 이메일 + 로그아웃 -->
+      <!-- 로그인 후에 보이는 내 이름 + 로그아웃 -->
       <span class="auth-in" id="authIn">
         <span class="user-chip" id="userChip">
           <span class="user-avatar" id="userAvatar"></span>
@@ -1136,11 +2096,20 @@
         <button class="logout-btn" onclick="logOut()">로그아웃</button>
       </span>
 
-      <span class="wish-chip"><span class="ico">&#9829;</span> <span id="wishCount">0</span></span>
+      <!-- 마이페이지 -->
+      <button class="icon-btn mypage-btn" onclick="openMyPage()" title="마이페이지" aria-label="마이페이지">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
+        </svg>
+      </button>
 
-      <button class="cart-btn" onclick="showCart()" title="장바구니 보기">
+      <span class="wish-chip" title="찜한 상품"><span class="ico" aria-hidden="true">&#9829;</span> <span id="wishCount">0</span></span>
+
+      <button class="cart-btn" onclick="showCart()" title="장바구니 보기" aria-label="장바구니 보기">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="9" cy="21" r="1"></circle>
           <circle cx="20" cy="21" r="1"></circle>
           <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
@@ -1150,6 +2119,24 @@
     </div>
 
   </div>
+
+  <!-- 두 번째 줄: 카테고리 메뉴 (누르면 그 구역으로 이동) -->
+  <nav class="catbar" aria-label="카테고리">
+    <div class="catbar-inner">
+      <a href="#best">베스트</a>
+      <a href="#sale" class="hot">타임세일</a>
+      <a href="#new">신상품</a>
+      <span class="divider" aria-hidden="true"></span>
+      <a href="#menu" onclick="goCategory('전체'); return false;">전체 메뉴</a>
+      <a href="#menu" onclick="goCategory('야채'); return false;">야채</a>
+      <a href="#menu" onclick="goCategory('해산물'); return false;">해산물</a>
+      <a href="#menu" onclick="goCategory('소고기'); return false;">소고기</a>
+      <a href="#menu" onclick="goCategory('닭고기'); return false;">닭고기</a>
+      <span class="divider" aria-hidden="true"></span>
+      <a href="#story">브랜드 이야기</a>
+      <a href="#reviews">구매 후기</a>
+    </div>
+  </nav>
 </header>
 
 
@@ -1169,7 +2156,7 @@
 
   <div class="cart-foot">
     <p class="cart-total">총 결제금액 <span id="cartTotal">0원</span></p>
-    <button class="btn" onclick="showAlert('결제 기능은 준비 중입니다!')">주문하기</button>
+    <button class="btn" onclick="openOrder()">주문하기</button>
   </div>
 </div>
 
@@ -1226,44 +2213,215 @@
 
 
 <!-- =========================================================
-     큰 배너
+     주문서 창 (장바구니의 주문하기를 누르면 뜸)
      ========================================================= -->
-<section class="hero">
-  <div>
-    <p class="hero-eyebrow">MORNING DELIVERY</p>
-    <h2>아침 배송 30% 할인</h2>
-    <p class="hero-desc">오늘 아침 수확한 채소로 만든 샐러드를 문 앞까지 보내드려요</p>
-    <p class="hero-note">일부 품목 제외</p>
-    <button class="btn" onclick="showAlert('이벤트 페이지는 준비 중입니다!')">할인 상품 보러가기</button>
-  </div>
-</section>
+<div class="order-dim" id="orderDim" onclick="if (event.target === this) closeOrder()">
+  <form class="order-box" onsubmit="submitOrder(event)" novalidate>
+    <button type="button" class="cart-x order-x" onclick="closeOrder()" title="닫기">&times;</button>
+    <h3 id="orderTitle">주문서</h3>
 
+    <!-- 1단계 · 2단계 표시 -->
+    <ol class="order-steps">
+      <li class="on" id="orderStepLabel1">1 주문서 작성</li>
+      <li id="orderStepLabel2">2 주문 내용 확인</li>
+    </ol>
 
-<!-- =========================================================
-     상품 목록
-     ========================================================= -->
-<section class="section">
-  <div class="container">
+    <!-- 1단계: 주문 상품 보여주기 + 받는 분 정보 적기 -->
+    <div id="orderStep1">
+      <h4>주문 상품</h4>
+      <ul class="order-items" id="orderItems"></ul>
+      <p class="order-total">총 결제금액 <span id="orderTotal">0원</span></p>
 
-    <div class="section-head">
-      <p class="section-eyebrow">BEST MENU</p>
-      <h2 class="section-title">이번 주 인기 샐러드</h2>
-      <p class="section-desc">매일 아침 밭에서 온 싱그러움을 그대로 담았습니다</p>
+      <h4>받는 분 정보</h4>
+
+      <label for="orderName">받는 사람 이름</label>
+      <input type="text" id="orderName" placeholder="홍길동" autocomplete="name">
+
+      <label for="orderPhone">연락처</label>
+      <input type="tel" id="orderPhone" placeholder="010-1234-5678" autocomplete="tel">
+
+      <label for="orderAddress">주소</label>
+      <input type="text" id="orderAddress" placeholder="예) 서울시 강남구 테헤란로 123, 101동 1001호" autocomplete="street-address">
     </div>
 
-    <!-- 검색창 -->
-    <div class="search">
-      <input type="text" id="searchBox" placeholder="상품 이름 검색 (초성도 됩니다)" oninput="searchProduct(this)">
+    <!-- 2단계: 받는 분 → 주문 상품 · 수량 → 전체 합계 → 질문 순서로 한 번 더 보여주기 -->
+    <div id="orderStep2" style="display: none;">
+      <h4>받는 분 정보</h4>
+      <dl class="order-check">
+        <dt>받는 사람</dt>
+        <dd id="checkName"></dd>
+        <dt>연락처</dt>
+        <dd id="checkPhone"></dd>
+        <dt>주소</dt>
+        <dd id="checkAddress"></dd>
+      </dl>
+
+      <h4>주문할 상품과 수량</h4>
+      <ul class="order-items" id="checkItems"></ul>
+      <p class="order-total">전체 합계 금액 <span id="checkTotal">0원</span></p>
+
+      <p class="order-question">이대로 주문하시겠습니까?</p>
+    </div>
+
+    <!-- 안내 문구가 여기에 나옴 -->
+    <p class="order-msg" id="orderMsg"></p>
+
+    <!-- 1단계 버튼 -->
+    <div class="order-buttons" id="orderButtons1">
+      <button type="button" class="btn order-back" onclick="backToCart()">장바구니로 돌아가기</button>
+      <button type="submit" class="btn">다음</button>
+    </div>
+
+    <!-- 2단계 버튼 -->
+    <div class="order-buttons" id="orderButtons2" style="display: none;">
+      <button type="button" class="btn order-back" onclick="showOrderStep(1)">수정하기</button>
+      <button type="button" class="btn" onclick="confirmOrder()">주문하기</button>
+    </div>
+  </form>
+</div>
+
+
+
+<main id="top">
+
+  <!-- =========================================================
+       메인 배너 (프로모션 + 버튼)
+       ========================================================= -->
+  <section class="hero-wrap container" aria-label="이번 주 프로모션">
+    <div class="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">MORNING DELIVERY</p>
+        <h1>아침 배송<br><em>30% 할인</em></h1>
+        <p class="hero-desc">오늘 아침 수확한 채소로 만든 샐러드를 문 앞까지 보내드려요</p>
+        <p class="hero-note">일부 품목 제외</p>
+        <div class="hero-actions">
+          <button class="btn btn-lime" onclick="goSection('sale')">할인 상품 보러가기</button>
+          <button class="btn btn-ghost" onclick="goCategory('전체')">전체 메뉴 보기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       믿고 사는 이유 (아래 '배송 안내' · '브랜드 이야기'와 같은 내용)
+       ========================================================= -->
+  <section class="trust container" aria-label="쇼핑 안내">
+    <ul class="trust-list">
+      <li>
+        <span class="trust-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 7h13v9H1zM14 10h4l3 3v3h-7z"></path><circle cx="5.5" cy="18" r="1.8"></circle><circle cx="17.5" cy="18" r="1.8"></circle>
+          </svg>
+        </span>
+        <div><strong>오전 10시 전 주문</strong><span>당일 출발</span></div>
+      </li>
+      <li>
+        <span class="trust-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7c-2-4-6-4-6-1.5S9 7 12 7c3 0 6-1 6-1.5S14 3 12 7z"></path>
+          </svg>
+        </span>
+        <div><strong>5만원 이상</strong><span>무료배송</span></div>
+      </li>
+      <li>
+        <span class="trust-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 20A7 7 0 0 1 4 13c0-6 7-9 16-9 0 9-3 16-9 16z"></path><path d="M4 21c3-6 7-9 11-11"></path>
+          </svg>
+        </span>
+        <div><strong>유기농 채소</strong><span>당일 공급 재료 사용</span></div>
+      </li>
+      <li>
+        <span class="trust-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2.5c3 4 6 7.4 6 11a6 6 0 0 1-12 0c0-3.6 3-7 6-11z"></path>
+          </svg>
+        </span>
+        <div><strong>저당 소스</strong><span>가볍고 건강하게</span></div>
+      </li>
+    </ul>
+  </section>
+
+
+  <!-- =========================================================
+       베스트셀러 (products 테이블에서 BEST 표시된 상품)
+       ========================================================= -->
+  <section class="section container reveal" id="best" aria-labelledby="bestTitle">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">BEST SELLER</p>
+        <h2 class="section-title" id="bestTitle">가장 많이 찾는 샐러드</h2>
+        <p class="section-desc">매일 아침 밭에서 온 싱그러움을 그대로 담았습니다</p>
+      </div>
+      <button class="more-link" onclick="goCategory('전체')">전체 보기 &rarr;</button>
+    </div>
+    <div class="product-list" id="bestList"></div>
+  </section>
+
+
+  <!-- =========================================================
+       타임세일 (할인율이 큰 순서, 오늘 출발 마감까지 남은 시간)
+       ========================================================= -->
+  <section class="section container reveal" id="sale" aria-labelledby="saleTitle">
+    <div class="sale-box">
+      <div class="section-head">
+        <div>
+          <p class="section-eyebrow" style="color: var(--red);">TIME SALE</p>
+          <h2 class="section-title" id="saleTitle">지금 가장 많이 할인해요</h2>
+          <p class="section-desc">할인 폭이 큰 메뉴부터 모았어요 · 오전 10시 전에 주문하면 오늘 출발</p>
+        </div>
+        <div class="countdown" aria-live="off">
+          <span id="countdownLabel">오늘 출발 마감까지</span>
+          <b id="countdown">--:--:--</b>
+        </div>
+      </div>
+      <div class="product-list" id="saleList"></div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       신상품 (가장 최근에 등록된 상품)
+       ========================================================= -->
+  <section class="section container reveal" id="new" aria-labelledby="newTitle">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">NEW ARRIVALS</p>
+        <h2 class="section-title" id="newTitle">새로 들어온 메뉴</h2>
+        <p class="section-desc">가장 최근에 등록된 샐러드예요</p>
+      </div>
+    </div>
+    <div class="product-list" id="newList"></div>
+  </section>
+
+
+  <!-- =========================================================
+       전체 메뉴 (카테고리 · 검색으로 슈파베이스에서 조회)
+       ========================================================= -->
+  <section class="section container" id="menu" aria-labelledby="menuTitle">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">ALL MENU</p>
+        <h2 class="section-title" id="menuTitle">전체 메뉴</h2>
+      </div>
     </div>
 
     <!-- 카테고리 버튼 -->
-    <div class="filter">
-      <button class="filter-btn active" onclick="filterCategory('전체', this)">전체</button>
-      <button class="filter-btn" onclick="filterCategory('야채', this)">야채</button>
-      <button class="filter-btn" onclick="filterCategory('해산물', this)">해산물</button>
-      <button class="filter-btn" onclick="filterCategory('소고기', this)">소고기</button>
-      <button class="filter-btn" onclick="filterCategory('닭고기', this)">닭고기</button>
+    <div class="filter" role="group" aria-label="카테고리 고르기">
+      <button class="filter-btn active" data-cat="전체" onclick="filterCategory('전체', this)">전체</button>
+      <button class="filter-btn" data-cat="야채" onclick="filterCategory('야채', this)">야채</button>
+      <button class="filter-btn" data-cat="해산물" onclick="filterCategory('해산물', this)">해산물</button>
+      <button class="filter-btn" data-cat="소고기" onclick="filterCategory('소고기', this)">소고기</button>
+      <button class="filter-btn" data-cat="닭고기" onclick="filterCategory('닭고기', this)">닭고기</button>
     </div>
+
+    <!-- 검색 중일 때 안내 -->
+    <p class="search-info" id="searchInfo"></p>
 
     <!-- 상품 카드 (슈파베이스 products 테이블에서 불러와서 채움) -->
     <div class="product-list" id="productList">
@@ -1275,71 +2433,117 @@
       찾으시는 상품이 없습니다.<br>
       다른 이름으로 검색해 보세요.
     </p>
-
-  </div>
-</section>
+  </section>
 
 
-<!-- =========================================================
-     쇼핑몰 소개
-     ========================================================= -->
-<section class="about">
-  <div class="container">
-
-    <div class="section-head">
-      <p class="section-eyebrow">ABOUT US</p>
-      <h2 class="section-title">GREEN SALAD를 소개합니다</h2>
+  <!-- =========================================================
+       브랜드 이야기 + 배송 · 보관 · 교환 안내
+       ========================================================= -->
+  <section class="section container reveal" id="story" aria-labelledby="storyTitle">
+    <div class="story">
+      <div class="story-photo">
+        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200" alt="채소가 가득 진열된 모습" loading="lazy">
+      </div>
+      <div>
+        <p class="section-eyebrow">OUR STORY</p>
+        <h2 class="section-title" id="storyTitle">GREEN SALAD를<br>소개합니다</h2>
+        <ul class="story-points">
+          <li><span class="num">01</span>유기농 채소를 사용하여 건강하게 만들었습니다.</li>
+          <li><span class="num">02</span>당일 공급되는 과일과 채소로 신선합니다.</li>
+          <li><span class="num">03</span>소스는 저당으로 건강합니다.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="about-lines">
-      <p>유기농 채소를 사용하여 건강하게 만들었습니다.</p>
-      <p>당일 공급되는 과일과 채소로 신선합니다.</p>
-      <p>소스는 저당으로 건강합니다.</p>
-    </div>
-
-    <!-- 안내 3개 -->
     <div class="info-list">
-
       <div class="info">
-        <h4>배송 안내</h4>
+        <h4><span aria-hidden="true">&#9679;</span> 배송 안내</h4>
         <p>오전 10시 이전 주문 시 당일 출발합니다.<br>
            5만원 이상 구매 시 무료배송입니다.</p>
       </div>
-
       <div class="info">
-        <h4>보관 안내</h4>
+        <h4><span aria-hidden="true">&#9679;</span> 보관 안내</h4>
         <p>받으신 뒤 바로 냉장 보관해 주세요.<br>
            신선식품이라 당일 섭취를 권해드립니다.</p>
       </div>
-
       <div class="info">
-        <h4>교환 · 환불 안내</h4>
+        <h4><span aria-hidden="true">&#9679;</span> 교환 · 환불 안내</h4>
         <p>신선식품 특성상 단순 변심 환불은 어렵습니다.<br>
            상품에 문제가 있으면 수령 후 24시간 내 연락 주세요.</p>
       </div>
-
     </div>
+  </section>
 
-  </div>
-</section>
+
+  <!-- =========================================================
+       구매 후기 (아직 후기 기능이 없어서 빈 상태로 보여줌)
+       ========================================================= -->
+  <section class="section container reveal" id="reviews" aria-labelledby="reviewTitle">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">REVIEWS</p>
+        <h2 class="section-title" id="reviewTitle">구매 후기</h2>
+      </div>
+    </div>
+    <div class="review-empty">
+      <div>
+        <strong>아직 등록된 후기가 없어요</strong>
+        <p>GREEN SALAD를 드셔보셨다면 첫 번째 후기를 남겨주세요. 후기 작성은 곧 열릴 예정이에요.</p>
+      </div>
+      <span class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       인스타그램 (상품 사진으로 채움)
+       ▼▼ 실제 인스타그램 주소가 생기면 아래 href="#" 를 바꿔주세요 ▼▼
+       ========================================================= -->
+  <section class="section container reveal" aria-labelledby="instaTitle">
+    <div class="section-head">
+      <div>
+        <p class="section-eyebrow">INSTAGRAM</p>
+        <h2 class="section-title" id="instaTitle">@greensalad 의 오늘</h2>
+        <p class="section-desc">매일 아침 만드는 샐러드를 인스타그램에서도 만나보세요</p>
+      </div>
+      <a class="more-link" href="#">인스타그램 &rarr;</a>
+    </div>
+    <div class="insta-grid" id="instaGrid"></div>
+  </section>
+
+</main>
 
 
 <!-- =========================================================
-     맨 아래 (안내 메뉴 · 고객센터 · 사업자 정보)
+     맨 아래 (고객센터 · 사업자 정보 · 결제 · 약관 · SNS)
      ========================================================= -->
 <footer>
   <div class="container">
 
-    <div class="footer-menu">
-      <a href="#">이용안내</a>
-      <a href="#">배송조회</a>
-      <a href="#">교환반품</a>
-      <a href="#">자주 묻는 질문</a>
-      <a href="#">이용약관</a>
-      <a href="#"><strong>개인정보처리방침</strong></a>
-    </div>
+    <div class="footer-top">
 
-    <div class="footer-cols">
+      <div>
+        <p class="footer-brand">GREEN <b>SALAD</b></p>
+        <p>당일 들어온 유기농 채소로<br>매일 신선한 샐러드를 만듭니다.</p>
+        <!-- ▼▼ 실제 SNS 주소가 생기면 href="#" 를 바꿔주세요 ▼▼ -->
+        <div class="sns">
+          <a href="#" aria-label="인스타그램">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
+            </svg>
+          </a>
+          <a href="#" aria-label="유튜브">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="2" y="5" width="20" height="14" rx="4"></rect><path d="M10 9l5 3-5 3z" fill="currentColor"></path>
+            </svg>
+          </a>
+          <a href="#" aria-label="블로그">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 4h16v12H8l-4 4z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
 
       <div>
         <h5>고객센터</h5>
@@ -1358,17 +2562,33 @@
            주소 서울특별시 강남구 테헤란로 000, 0층</p>
       </div>
 
+      <!-- ▼▼ 결제 수단은 실제로 계약한 것만 남겨주세요 ▼▼ -->
       <div>
         <h5>개인정보 · 결제</h5>
         <p>개인정보보호책임자 홍길동 (help@greensalad.com)<br>
            호스팅 제공 GitHub Pages<br>
            고객님의 결제 대금 보호를 위해<br>
            구매안전서비스에 가입되어 있습니다.</p>
+        <div class="pay-list" aria-label="결제 수단">
+          <span>신용카드</span>
+          <span>계좌이체</span>
+          <span>간편결제</span>
+        </div>
       </div>
 
     </div>
 
-    <p class="copyright">&copy; 2026 GREEN SALAD. All rights reserved.</p>
+    <div class="footer-bottom">
+      <nav class="footer-menu" aria-label="고객 안내">
+        <a href="#">이용안내</a>
+        <a href="#">배송조회</a>
+        <a href="#">교환반품</a>
+        <a href="#">자주 묻는 질문</a>
+        <a href="#">이용약관</a>
+        <a href="#"><strong>개인정보처리방침</strong></a>
+      </nav>
+      <p class="copyright">&copy; 2026 GREEN SALAD. All rights reserved.</p>
+    </div>
 
   </div>
 </footer>
@@ -1393,6 +2613,113 @@
      ========================================================== */
   function showAlert(message) {
     alert(message);
+  }
+
+
+  /* ==========================================================
+     상품 카드 한 장 만들기 (베스트 · 타임세일 · 신상품 · 전체 메뉴에서 같이 씀)
+     ========================================================== */
+
+  /* 할인율 = (할인 전 가격 - 판매 가격) / 할인 전 가격 * 100 (할인 없으면 0) */
+  function discountRate(p) {
+    if (p.old_price && p.old_price > p.price) {
+      return Math.round((p.old_price - p.price) / p.old_price * 100);
+    }
+    return 0;
+  }
+
+  /* options.saleBadge: 사진 위에 -30% 배지도 붙이기 (타임세일용) */
+  function makeCard(p, options) {
+    options = options || {};
+    var rate = discountRate(p);
+
+    // 배지: 타임세일에서는 할인율 배지만, 나머지는 BEST (좁은 화면에서 겹치지 않게 하나만)
+    var badges = "";
+    if (options.saleBadge && rate > 0) {
+      badges = '<span class="badge-sale">-' + rate + '%</span>';
+    } else if (p.is_best) {
+      badges = '<span class="best">BEST</span>';
+    }
+
+    // 별점: 후기가 있을 때만 점수와 개수, 없으면 "첫 후기를 기다려요"
+    var rating;
+    if (p.review_count > 0 && p.rating !== null) {
+      rating = '<p class="rating"><span class="star" aria-hidden="true">&#9733;</span><b>' +
+               Number(p.rating).toFixed(1) + '</b> (' + p.review_count.toLocaleString() + ')</p>';
+    } else {
+      rating = '<p class="rating"><span class="star" aria-hidden="true">&#9734;</span>첫 후기를 기다려요</p>';
+    }
+
+    return '' +
+      '<div class="card" data-id="' + p.id + '" data-category="' + p.category + '" data-price="' + p.price + '">' +
+        '<div class="thumb">' +
+          '<img class="photo" src="' + p.image_url + '" alt="' + p.name + '" loading="lazy">' +
+          (badges ? '<div class="badges">' + badges + '</div>' : '') +
+          '<button class="heart' + (wishIds.indexOf(p.id) > -1 ? ' on' : '') + '" onclick="toggleHeart(this)" title="찜하기" aria-label="찜하기">&#9829;</button>' +
+          '<button class="quick-add" onclick="addToCart(this)">+ 빠르게 담기</button>' +
+        '</div>' +
+        '<div class="card-body">' +
+          '<h4>' + p.name + '</h4>' +
+          '<p class="eng">' + (p.eng_name || '') + '</p>' +
+          rating +
+          '<div class="price-row">' +
+            '<p class="price">' + (rate > 0 ? '<span class="sale">' + rate + '%</span>' : '') + p.price.toLocaleString() + '원</p>' +
+            (rate > 0 ? '<p class="old-price">' + p.old_price.toLocaleString() + '원</p>' : '') +
+          '</div>' +
+          '<button class="btn" onclick="addToCart(this)">장바구니 담기</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  /* 불러오는 동안 회색 카드 n장 */
+  function skeletons(n) {
+    var html = "";
+    for (var i = 0; i < n; i++) {
+      html = html + '<div class="skeleton" aria-hidden="true"></div>';
+    }
+    return html;
+  }
+
+
+  /* ==========================================================
+     베스트 · 타임세일 · 신상품 · 인스타그램 구역 채우기
+     (상품 전체를 한 번 받아와서 구역마다 골라 담기)
+     ========================================================== */
+  async function loadShowcase() {
+    ["bestList", "saleList", "newList"].forEach(function (id) {
+      document.getElementById(id).innerHTML = skeletons(4);
+    });
+
+    var result = await db.from("products").select("*").order("sort_order", { ascending: true });
+
+    if (result.error) {
+      ["bestList", "saleList", "newList"].forEach(function (id) {
+        document.getElementById(id).innerHTML = '<p class="list-status">상품을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</p>';
+      });
+      return;
+    }
+
+    var all = result.data;
+
+    // 베스트: BEST 표시된 상품 (최대 4개)
+    var best = all.filter(function (p) { return p.is_best; }).slice(0, 4);
+
+    // 타임세일: 할인율이 큰 순서로 4개
+    var sale = all.filter(function (p) { return discountRate(p) > 0; })
+                  .sort(function (a, b) { return discountRate(b) - discountRate(a); })
+                  .slice(0, 4);
+
+    // 신상품: 가장 최근에 등록된 순서로 4개
+    var fresh = all.slice().sort(function (a, b) { return b.id - a.id; }).slice(0, 4);
+
+    document.getElementById("bestList").innerHTML = best.map(function (p) { return makeCard(p); }).join("");
+    document.getElementById("saleList").innerHTML = sale.map(function (p) { return makeCard(p, { saleBadge: true }); }).join("");
+    document.getElementById("newList").innerHTML = fresh.map(function (p) { return makeCard(p); }).join("");
+
+    // 인스타그램 칸: 상품 사진 6장
+    document.getElementById("instaGrid").innerHTML = all.slice(0, 6).map(function (p) {
+      return '<a href="#" aria-label="인스타그램에서 ' + p.name + ' 보기"><img src="' + p.image_url + '" alt="" loading="lazy"></a>';
+    }).join("");
   }
 
 
@@ -1438,37 +2765,7 @@
       return;
     }
 
-    var html = "";
-
-    result.data.forEach(function (p) {
-      // 정가가 있고 판매가보다 비싸면 할인율 계산
-      // 할인율 = (할인 전 가격 - 판매 가격) / 할인 전 가격 * 100
-      var saleTag = "";
-      var oldTag = "";
-      if (p.old_price && p.old_price > p.price) {
-        var rate = Math.round((p.old_price - p.price) / p.old_price * 100);
-        saleTag = '<span class="sale">' + rate + '%</span>';
-        oldTag = '<p class="old-price">' + p.old_price.toLocaleString() + '원</p>';
-      }
-
-      html = html +
-        '<div class="card" data-id="' + p.id + '" data-category="' + p.category + '" data-price="' + p.price + '">' +
-          '<div class="thumb">' +
-            '<img class="photo" src="' + p.image_url + '" alt="' + p.name + '">' +
-            (p.is_best ? '<span class="best">BEST</span>' : '') +
-            '<button class="heart" onclick="toggleHeart(this)" title="찜하기">&#9829;</button>' +
-          '</div>' +
-          '<div class="card-body">' +
-            '<h4>' + p.name + '</h4>' +
-            '<p class="eng">' + (p.eng_name || '') + '</p>' +
-            '<p class="price">' + saleTag + p.price.toLocaleString() + '원</p>' +
-            oldTag +
-            '<button class="btn" onclick="addToCart(this)">장바구니 담기</button>' +
-          '</div>' +
-        '</div>';
-    });
-
-    list.innerHTML = html;
+    list.innerHTML = result.data.map(function (p) { return makeCard(p); }).join("");
 
     // 하나도 없으면 안내 문구 보여주기
     if (result.data.length === 0) {
@@ -1518,6 +2815,23 @@
     nowSearch = input.value.trim();
     clearTimeout(searchTimer);
     searchTimer = setTimeout(showProducts, 300);
+
+    // 전체 메뉴 위에 "'연어' 검색 결과" 안내 보여주기
+    var info = document.getElementById("searchInfo");
+    if (nowSearch === "") {
+      info.style.display = "none";
+    } else {
+      info.innerHTML = "'<b></b>' 검색 결과 <button type=\"button\" onclick=\"clearSearch()\">검색 지우기</button>";
+      info.querySelector("b").innerText = nowSearch;   // 입력한 글자를 그대로 (태그로 해석되지 않게)
+      info.style.display = "block";
+    }
+  }
+
+  /* 검색 지우기 */
+  function clearSearch() {
+    var box = document.getElementById("searchBox");
+    box.value = "";
+    searchProduct(box);
   }
 
   /* 카테고리 버튼을 누르면 실행 */
@@ -1537,12 +2851,25 @@
   /* ==========================================================
      찜하기 하트
      ========================================================== */
-  function toggleHeart(button) {
-    button.classList.toggle("on");   // on 이 붙으면 빨강, 떼면 회색
+  var wishIds = [];   // 찜한 상품 번호들
 
-    // 찜한 하트 개수를 세어서 맨 위에 보여주기
-    var picked = document.querySelectorAll(".heart.on").length;
-    document.getElementById("wishCount").innerText = picked;
+  function toggleHeart(button) {
+    var id = Number(button.closest(".card").dataset.id);
+    var isOn = !button.classList.contains("on");   // 누른 뒤 상태
+
+    if (isOn) {
+      wishIds.push(id);
+    } else {
+      wishIds = wishIds.filter(function (w) { return w !== id; });
+    }
+
+    // 같은 상품이 여러 구역(베스트 · 세일 · 전체 메뉴)에 있으니 하트를 모두 같이 바꾸기
+    document.querySelectorAll('.card[data-id="' + id + '"] .heart').forEach(function (h) {
+      h.classList.toggle("on", isOn);
+    });
+
+    // 찜한 상품 개수를 맨 위에 보여주기
+    document.getElementById("wishCount").innerText = wishIds.length;
   }
 
 
@@ -1573,6 +2900,12 @@
     drawCart();      // 목록 다시 그리기
     openCart();      // 장바구니 열기
     saveCartItem(found);
+
+    // 장바구니 숫자가 톡 튀는 효과
+    var badge = document.getElementById("cartCount");
+    badge.classList.remove("bump");
+    void badge.offsetWidth;   // 효과를 처음부터 다시 시작하게
+    badge.classList.add("bump");
   }
 
 
@@ -1739,7 +3072,89 @@
   }
 
   drawCart();       // 처음 열었을 때 "담긴 상품이 없습니다" 보여주기
-  loadProducts();   // 슈파베이스에서 상품 목록 불러오기
+  loadProducts();   // 슈파베이스에서 전체 메뉴 불러오기
+  loadShowcase();   // 베스트 · 타임세일 · 신상품 · 인스타그램 채우기
+
+
+  /* ==========================================================
+     메뉴 이동 · 마이페이지
+     ========================================================== */
+
+  /* 구역으로 부드럽게 이동 (예: goSection("sale")) */
+  function goSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* 위쪽 카테고리 메뉴를 누르면: 전체 메뉴로 이동해서 그 카테고리 고르기 */
+  function goCategory(category) {
+    var button = document.querySelector('.filter-btn[data-cat="' + category + '"]');
+    filterCategory(category, button);
+    goSection("menu");
+  }
+
+  /* 마이페이지: 로그인 안 했으면 로그인 창, 했으면 준비 중 안내 */
+  function openMyPage() {
+    if (!document.body.classList.contains("logged-in")) {
+      openLogin();
+    } else {
+      showAlert("마이페이지는 준비 중입니다.");
+    }
+  }
+
+
+  /* ==========================================================
+     타임세일 남은 시간 (매일 오전 10시 = 당일 출발 마감)
+     ========================================================== */
+  function updateCountdown() {
+    var now = new Date();
+    var deadline = new Date(now);
+    deadline.setHours(10, 0, 0, 0);
+
+    var label = "오늘 출발 마감까지";
+    if (now >= deadline) {                       // 10시가 지났으면 내일 10시까지
+      deadline.setDate(deadline.getDate() + 1);
+      label = "내일 출발 마감까지";
+    }
+
+    var left = Math.floor((deadline - now) / 1000);   // 남은 초
+    var h = Math.floor(left / 3600);
+    var m = Math.floor((left % 3600) / 60);
+    var s = left % 60;
+
+    function two(n) { return (n < 10 ? "0" : "") + n; }
+
+    document.getElementById("countdownLabel").innerText = label;
+    document.getElementById("countdown").innerText = two(h) + ":" + two(m) + ":" + two(s);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+
+  /* ==========================================================
+     스크롤하면 구역이 부드럽게 나타나는 효과
+     ========================================================== */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!("IntersectionObserver" in window) || reduce) {
+      return;   // 지원 안 하거나 움직임 줄이기를 켰으면 효과 없이 그냥 보여주기
+    }
+
+    document.documentElement.classList.add("reveal-on");
+
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          watcher.unobserve(entry.target);   // 한 번 나타나면 끝
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+
+    document.querySelectorAll(".reveal").forEach(function (el) {
+      watcher.observe(el);
+    });
+  })();
 
 
   /* ==========================================================
@@ -1980,6 +3395,144 @@
       }
     }
   });
+
+
+  /* ==========================================================
+     주문서 (화면만 있음 - 아직 저장하지 않음)
+     ========================================================== */
+
+  /* 장바구니의 주문하기를 누르면 실행 */
+  function openOrder() {
+    // 로그인 안 했으면 주문서 대신 로그인 창으로
+    if (!cartUserId) {
+      showAlert("로그인 후 주문할 수 있습니다.");
+      closeCart();
+      openLogin();
+      return;
+    }
+
+    // 장바구니가 비어 있으면 막기
+    if (cartList.length === 0) {
+      showAlert("장바구니가 비어 있습니다. 상품을 담은 뒤 주문해 주세요.");
+      return;
+    }
+
+    // 장바구니 내용을 주문서에 옮겨 그리기 (장바구니는 건드리지 않음)
+    var html = "";
+    var total = 0;
+
+    cartList.forEach(function (item) {
+      var linePrice = item.price * item.qty;
+      total = total + linePrice;
+
+      html = html +
+        '<li>' +
+          '<img src="' + item.img + '" alt="' + item.name + '">' +
+          '<span class="o-name">' + item.name + '<span class="o-qty">× ' + item.qty + '</span></span>' +
+          '<span class="o-price">' + linePrice.toLocaleString() + '원</span>' +
+        '</li>';
+    });
+
+    document.getElementById("orderItems").innerHTML = html;
+    document.getElementById("orderTotal").innerText = total.toLocaleString() + "원";
+    showOrderStep(1);   // 열 때는 항상 1단계(작성)부터
+
+    closeCart();
+    document.getElementById("orderDim").classList.add("open");
+    document.getElementById("orderName").focus();
+  }
+
+  /* 주문서 단계 바꾸기 (1: 작성 / 2: 확인) */
+  function showOrderStep(step) {
+    var isCheck = (step === 2);
+
+    document.getElementById("orderTitle").innerText = isCheck ? "주문 내용 확인" : "주문서";
+    document.getElementById("orderStepLabel1").className = isCheck ? "" : "on";
+    document.getElementById("orderStepLabel2").className = isCheck ? "on" : "";
+
+    document.getElementById("orderStep1").style.display = isCheck ? "none" : "block";
+    document.getElementById("orderStep2").style.display = isCheck ? "block" : "none";
+    document.getElementById("orderButtons1").style.display = isCheck ? "none" : "flex";
+    document.getElementById("orderButtons2").style.display = isCheck ? "flex" : "none";
+
+    document.getElementById("orderMsg").className = "order-msg";   // 안내 문구 지우기
+    document.querySelector(".order-box").scrollTop = 0;            // 창 맨 위로
+  }
+
+  function closeOrder() {
+    document.getElementById("orderDim").classList.remove("open");
+  }
+
+  /* 장바구니로 돌아가기: 주문서를 닫고 장바구니 열기 (적은 내용은 그대로 남아 있음) */
+  function backToCart() {
+    closeOrder();
+    openCart();
+  }
+
+  /* 안내 문구 보여주기 (type: "fail" 빨강 / "ok" 초록) */
+  function showOrderMsg(type, text) {
+    var msg = document.getElementById("orderMsg");
+    msg.className = "order-msg " + type;
+    msg.innerText = text;
+  }
+
+  /* 주문서의 다음을 누르면: 빈칸을 확인하고 맞으면 확인 단계로 (저장은 아직 안 함) */
+  function submitOrder(event) {
+    event.preventDefault();   // 페이지가 새로고침되지 않게 막기
+
+    var name = document.getElementById("orderName").value.trim();
+    var phone = document.getElementById("orderPhone").value.trim();
+    var address = document.getElementById("orderAddress").value.trim();
+
+    if (name === "") {
+      showOrderMsg("fail", "받는 사람 이름을 입력해 주세요.");
+      return;
+    }
+    if (phone === "") {
+      showOrderMsg("fail", "연락처를 입력해 주세요.");
+      return;
+    }
+    // 숫자와 - 만, 숫자는 9~11자리 (예: 010-1234-5678, 02-123-4567)
+    if (!/^[0-9-]+$/.test(phone) || phone.replace(/-/g, "").length < 9 || phone.replace(/-/g, "").length > 11) {
+      showOrderMsg("fail", "연락처를 올바르게 입력해 주세요. (예: 010-1234-5678)");
+      return;
+    }
+    if (address === "") {
+      showOrderMsg("fail", "주소를 입력해 주세요.");
+      return;
+    }
+
+    // 적은 내용을 확인 화면에 옮겨 적기
+    document.getElementById("checkName").innerText = name;
+    document.getElementById("checkPhone").innerText = phone;
+    document.getElementById("checkAddress").innerText = address;
+
+    // 주문할 상품과 수량, 전체 합계 금액
+    var html = "";
+    var total = 0;
+
+    cartList.forEach(function (item) {
+      var linePrice = item.price * item.qty;
+      total = total + linePrice;
+
+      html = html +
+        '<li>' +
+          '<img src="' + item.img + '" alt="' + item.name + '">' +
+          '<span class="o-name">' + item.name + '<span class="o-qty">' + item.qty + '개</span></span>' +
+          '<span class="o-price">' + linePrice.toLocaleString() + '원</span>' +
+        '</li>';
+    });
+
+    document.getElementById("checkItems").innerHTML = html;
+    document.getElementById("checkTotal").innerText = total.toLocaleString() + "원";
+
+    showOrderStep(2);
+  }
+
+  /* 확인 화면의 주문하기를 누르면 (지금은 안내만, 저장은 다음 시간에) */
+  function confirmOrder() {
+    showOrderMsg("ok", "다음 시간에 완성합니다");
+  }
 </script>
 
 </body>
